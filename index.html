@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b4ea2">
+<link rel="manifest" href="manifest.json">
+<title>Kalyan Pathlab Business</title>
+<link rel="icon" href="logo.png">
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<style>
+:root{--blue:#0b4ea2;--blue2:#1677e8;--red:#e31b23;--green:#148a52;--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#687386;--border:#dce3ee}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text)}
+button,input{font:inherit}button{cursor:pointer}.app{min-height:100vh}.top{position:sticky;top:0;z-index:10;background:var(--blue);color:white;padding:12px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 10px #0002}.top img{width:42px;height:42px;border-radius:50%;object-fit:cover;background:white}.brand{font-weight:800;font-size:18px}.sub{font-size:11px;opacity:.85}.content{max-width:1050px;margin:auto;padding:16px 16px 88px}.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(5,1fr);z-index:20}.nav button{border:0;background:#fff;padding:9px 2px;color:#667;font-size:11px}.nav button.active{color:var(--blue);font-weight:800}.nav span{display:block;font-size:19px}.screen{display:none}.screen.active{display:block}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;box-shadow:0 2px 8px #1d35571a}.stat .label{font-size:12px;color:var(--muted)}.stat .value{font-size:22px;font-weight:800;margin-top:4px}.blue{color:var(--blue)}.green{color:var(--green)}.red{color:var(--red)}h2{font-size:20px;margin:4px 0 14px}h3{font-size:15px;margin:0 0 10px}.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}.field{margin-bottom:10px}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;font-weight:700}.field input,.field select{width:100%;padding:11px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;outline:none}.field input:focus{border-color:var(--blue2);box-shadow:0 0 0 3px #1677e81a}.btn{border:0;border-radius:10px;padding:11px 14px;font-weight:800}.primary{background:var(--blue2);color:#fff}.danger{background:#ffe7e7;color:#c3151d}.ghost{background:#edf4ff;color:var(--blue)}.success{background:#e7f7ee;color:var(--green)}.tests{width:100%;border-collapse:collapse;font-size:13px}.tests th,.tests td{padding:9px 6px;border-bottom:1px solid var(--border);text-align:left}.tests th{color:var(--muted);font-size:11px}.right{text-align:right!important}.suggest{position:relative}.suggestbox{position:absolute;left:0;right:0;top:100%;z-index:30;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 20px #0002;max-height:220px;overflow:auto}.suggestbox div{padding:10px 12px;border-bottom:1px solid #eee}.suggestbox div:hover{background:#eef5ff}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.summary .mini{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:10px}.mini small{display:block;color:var(--muted)}.mini b{font-size:16px}.bill{margin-bottom:10px}.billhead{display:flex;justify-content:space-between;gap:8px}.billname{font-weight:800}.muted{color:var(--muted);font-size:12px}.empty{text-align:center;padding:30px;color:var(--muted)}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.toolbar .field{flex:1;min-width:180px}.month{font-weight:800}.toast{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);background:#172033;color:#fff;padding:10px 16px;border-radius:10px;display:none;z-index:50}.modal{position:fixed;inset:0;background:#0006;display:none;align-items:flex-end;z-index:40}.modal.show{display:flex}.sheet{background:#fff;width:100%;max-height:92vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px}.install{display:none}@media(min-width:700px){.nav{position:static;max-width:1050px;margin:auto;border:0;background:transparent;grid-template-columns:repeat(5,auto);justify-content:flex-start;gap:8px;padding:8px 16px}.nav button{background:#fff;border:1px solid var(--border);border-radius:10px}.content{padding-top:8px}.modal{align-items:center;justify-content:center}.sheet{max-width:720px;border-radius:18px}.grid{grid-template-columns:repeat(4,1fr)}}@media(max-width:650px){.grid{grid-template-columns:repeat(2,1fr)}.summary{grid-template-columns:1fr 1fr}.row{flex-direction:column;align-items:stretch}.row>*{width:100%}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><img src="logo.png"><div><div class="brand">Kalyan Pathlab Business</div><div class="sub">Smart Billing • Test Master • Reports • Profit</div></div></header>
+
+<main class="content">
+<section id="dashboard" class="screen active">
+<h2>Dashboard</h2>
+<div class="grid">
+<div class="card stat"><div class="label">Total Bills</div><div id="sBills" class="value blue">0</div></div>
+<div class="card stat"><div class="label">Total B2C</div><div id="sB2C" class="value green">₹0</div></div>
+<div class="card stat"><div class="label">Total B2B</div><div id="sB2B" class="value red">₹0</div></div>
+<div class="card stat"><div class="label">Total Profit</div><div id="sProfit" class="value green">₹0</div></div>
+</div>
+<div class="card" style="margin-top:12px"><h3>Monthly Summary</h3><div id="monthlySummary"></div></div>
+</section>
+
+<section id="newbill" class="screen">
+<div class="row" style="margin-bottom:12px"><h2 style="flex:1">New Bill</h2><button class="btn ghost" onclick="resetBill()">Clear</button></div>
+<div class="card">
+<div class="row">
+<div class="field"><label>Bill No.</label><input id="billNo" readonly></div>
+<div class="field"><label>Date</label><input id="billDate" type="date"></div>
+</div>
+<div class="field"><label>Patient Name *</label><input id="patient" placeholder="Patient name"></div>
+<div class="field suggest"><label>Add Test</label><input id="testSearch" placeholder="Type test name (e.g. CBC)" autocomplete="off"><div id="suggestBox" class="suggestbox" style="display:none"></div></div>
+<div class="card" style="padding:8px">
+<table class="tests"><thead><tr><th>Test</th><th>MRP</th><th>B2B</th><th></th></tr></thead><tbody id="billTests"></tbody></table>
+<div id="noTests" class="empty">No tests added</div>
+</div>
+<div class="summary">
+<div class="mini"><small>Total MRP</small><b id="totalMRP">₹0</b></div>
+<div class="mini"><small>Total B2B</small><b id="totalB2B">₹0</b></div>
+<div class="mini"><small>Discount</small><b id="discount">₹0</b></div>
+</div>
+<div class="row" style="margin-top:10px">
+<div class="field"><label>Total B2C Amount (Patient Pay)</label><input id="b2c" type="number" min="0" value="0" oninput="calc()"></div>
+<div class="field"><label>Collection Charges (once)</label><input id="collection" type="number" min="0" value="0" oninput="calc()"></div>
+<div class="field"><label>Report Charges (once)</label><input id="report" type="number" min="0" value="0" oninput="calc()"></div>
+</div>
+<div class="card" style="background:#e9f8ef;margin-top:10px"><div class="muted">Profit</div><div id="profit" style="font-size:25px;font-weight:900;color:var(--green)">₹0</div></div>
+<button class="btn primary" style="width:100%;margin-top:12px" onclick="saveBill()">Save Bill</button>
+</div>
+</section>
+
+<section id="bills" class="screen">
+<h2>Bills</h2>
+<div class="toolbar"><div class="field"><input id="billSearch" placeholder="Search Patient Name / Bill No." oninput="renderBills()"></div><button class="btn ghost" onclick="exportBills()">Export Excel</button></div>
+<div id="billList"></div>
+</section>
+
+<section id="tests" class="screen">
+<h2>Test Master</h2>
+<div class="card">
+<div class="toolbar">
+<button class="btn primary" onclick="document.getElementById('excelFile').click()">Import Excel</button>
+<button class="btn ghost" onclick="exportTests()">Export Excel</button>
+<input id="excelFile" type="file" accept=".xlsx,.xls,.csv" style="display:none" onchange="importTests(event)">
+</div>
+<div class="field"><label>Test Search</label><input id="masterSearch" placeholder="Search test..." oninput="renderTests()"></div>
+<div class="row">
+<div class="field"><label>Test Name</label><input id="newTestName"></div>
+<div class="field"><label>MRP</label><input id="newTestMRP" type="number"></div>
+<div class="field"><label>B2B Rate</label><input id="newTestB2B" type="number"></div>
+<button class="btn primary" onclick="addTest()" style="margin-bottom:10px">Add</button>
+</div>
+<div id="testList"></div>
+</div>
+</section>
+
+<section id="reports" class="screen">
+<h2>Reports</h2>
+<div class="card">
+<div class="row"><div class="field"><label>Month</label><input id="reportMonth" type="month" onchange="renderReports()"></div><button class="btn primary" onclick="exportMonthly()">Export Monthly Excel</button></div>
+<div id="reportData"></div>
+</div>
+</section>
+</main>
+
+<nav class="nav">
+<button class="active" data-screen="dashboard" onclick="showScreen('dashboard')"><span>⌂</span>Dashboard</button>
+<button data-screen="newbill" onclick="showScreen('newbill');resetBill()"><span>＋</span>New Bill</button>
+<button data-screen="bills" onclick="showScreen('bills')"><span>▣</span>Bills</button>
+<button data-screen="tests" onclick="showScreen('tests')"><span>⌕</span>Tests</button>
+<button data-screen="reports" onclick="showScreen('reports')"><span>▥</span>Reports</button>
+</nav>
+<div id="toast" class="toast"></div>
+<div id="editModal" class="modal"><div class="sheet"><div class="row"><h2 style="flex:1">Edit Bill</h2><button class="btn ghost" onclick="closeModal()">Close</button></div><div id="editBody"></div></div></div>
+</div>
+<script>
+const KEY='kalyan_pathlab_business_v1';
+let db=JSON.parse(localStorage.getItem(KEY)||'null')||{tests:[{name:'CBC',mrp:500,b2b:250},{name:'Lipid Profile',mrp:800,b2b:400},{name:'LFT',mrp:700,b2b:350},{name:'KFT',mrp:600,b2b:300},{name:'TSH',mrp:700,b2b:350}],bills:[]};
+let currentTests=[];
+function saveDB(){localStorage.setItem(KEY,JSON.stringify(db))}
+function money(n){return '₹'+Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:2})}
+function id(){return 'KP'+new Date().toISOString().slice(0,10).replaceAll('-','')+String(db.bills.length+1).padStart(4,'0')}
+function today(){return new Date().toISOString().slice(0,10)}
+function toast(s){let t=document.getElementById('toast');t.textContent=s;t.style.display='block';setTimeout(()=>t.style.display='none',1800)}
+function showScreen(name){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(name).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.screen===name));if(name==='dashboard')renderDashboard();if(name==='bills')renderBills();if(name==='tests')renderTests();if(name==='reports')renderReports()}
+function resetBill(){currentTests=[];billNo.value=id();billDate.value=today();patient.value='';b2c.value=0;collection.value=0;report.value=0;testSearch.value='';renderBillTests();calc()}
+function renderBillTests(){let tb=document.getElementById('billTests');tb.innerHTML='';document.getElementById('noTests').style.display=currentTests.length?'none':'block';currentTests.forEach((t,i)=>{tb.innerHTML+=`<tr><td>${esc(t.name)}</td><td>${money(t.mrp)}</td><td>${money(t.b2b)}</td><td class="right"><button class="btn danger" style="padding:5px 8px" onclick="removeCurrent(${i})">×</button></td></tr>`})}
+function removeCurrent(i){currentTests.splice(i,1);renderBillTests();calc()}
+function calc(){let mrp=currentTests.reduce((a,t)=>a+Number(t.mrp),0),b2b=currentTests.reduce((a,t)=>a+Number(t.b2b),0),b2c=Number(document.getElementById('b2c').value||0),cc=Number(collection.value||0),rc=Number(report.value||0);totalMRP.textContent=money(mrp);totalB2B.textContent=money(b2b);discount.textContent=money(Math.max(0,mrp-b2c));profit.textContent=money(b2c-b2b-cc-rc)}
+testSearch.addEventListener('input',()=>{let q=testSearch.value.trim().toLowerCase(),box=suggestBox;if(!q){box.style.display='none';return}let arr=db.tests.filter(t=>t.name.toLowerCase().includes(q)).slice(0,12);box.innerHTML=arr.map((t,i)=>`<div onclick='pickTest(${JSON.stringify(t).replaceAll("'","&#39;")})'><b>${esc(t.name)}</b><br><span class="muted">MRP ${money(t.mrp)} • B2B ${money(t.b2b)}</span></div>`).join('');box.style.display=arr.length?'block':'none'})
+function pickTest(t){if(!currentTests.some(x=>x.name.toLowerCase()===t.name.toLowerCase()))currentTests.push({...t});testSearch.value='';suggestBox.style.display='none';renderBillTests();calc()}
+document.addEventListener('click',e=>{if(!e.target.closest('.suggest'))suggestBox.style.display='none'})
+function saveBill(){if(!patient.value.trim()){toast('Patient Name required');return}if(!currentTests.length){toast('Add at least one test');return}let mrp=currentTests.reduce((a,t)=>a+Number(t.mrp),0),b2b=currentTests.reduce((a,t)=>a+Number(t.b2b),0),b2c=Number(document.getElementById('b2c').value||0),cc=Number(collection.value||0),rc=Number(report.value||0);let bill={billNo:billNo.value,date:billDate.value,patient:patient.value.trim(),tests:currentTests, mrp,b2b,b2c,collection:cc,report:rc,discount:mrp-b2c,profit:b2c-b2b-cc-rc};db.bills.unshift(bill);saveDB();toast('Bill saved');resetBill();showScreen('bills')}
+function renderDashboard(){let bs=db.bills;let s=(k)=>bs.reduce((a,b)=>a+Number(b[k]||0),0);sBills.textContent=bs.length;sB2C.textContent=money(s('b2c'));sB2B.textContent=money(s('b2b'));sProfit.textContent=money(s('profit'));let d=new Date(),ym=d.toISOString().slice(0,7),mb=bs.filter(b=>b.date.startsWith(ym));monthlySummary.innerHTML=`<div class="summary"><div class="mini"><small>Bills</small><b>${mb.length}</b></div><div class="mini"><small>B2C Collection</small><b>${money(mb.reduce((a,b)=>a+b.b2c,0))}</b></div><div class="mini"><small>B2B Cost</small><b>${money(mb.reduce((a,b)=>a+b.b2b,0))}</b></div><div class="mini"><small>Collection Charges</small><b>${money(mb.reduce((a,b)=>a+b.collection,0))}</b></div><div class="mini"><small>Report Charges</small><b>${money(mb.reduce((a,b)=>a+b.report,0))}</b></div><div class="mini"><small>Monthly Profit</small><b class="green">${money(mb.reduce((a,b)=>a+b.profit,0))}</b></div></div>`}
+function renderBills(){let q=(billSearch.value||'').toLowerCase();let arr=db.bills.filter(b=>b.patient.toLowerCase().includes(q)||b.billNo.toLowerCase().includes(q));billList.innerHTML=arr.length?arr.map(b=>`<div class="card bill"><div class="billhead"><div><div class="billname">${esc(b.patient)}</div><div class="muted">${b.billNo} • ${b.date}</div></div><div style="text-align:right"><b>${money(b.b2c)}</b><div class="muted">Profit ${money(b.profit)}</div></div></div><div class="muted" style="margin-top:8px">${b.tests.map(t=>esc(t.name)).join(', ')}</div><div class="toolbar" style="margin-top:10px;margin-bottom:0"><button class="btn ghost" onclick="viewBill('${b.billNo}')">View / Edit</button><button class="btn danger" onclick="deleteBill('${b.billNo}')">Delete</button></div></div>`).join(''):'<div class="empty">No bills found</div>'}
+function viewBill(no){let b=db.bills.find(x=>x.billNo===no);if(!b)return;document.getElementById('editBody').innerHTML=`<div class="field"><label>Patient Name</label><input id="ePatient" value="${attr(b.patient)}"></div><div class="field"><label>Date</label><input id="eDate" type="date" value="${b.date}"></div><div class="card"><b>Tests</b><ul>${b.tests.map(t=>`<li>${esc(t.name)} — MRP ${money(t.mrp)} — B2B ${money(t.b2b)}</li>`).join('')}</ul></div><div class="row"><div class="field"><label>B2C</label><input id="eB2C" type="number" value="${b.b2c}"></div><div class="field"><label>Collection Charges</label><input id="eCC" type="number" value="${b.collection}"></div><div class="field"><label>Report Charges</label><input id="eRC" type="number" value="${b.report}"></div></div><div class="card"><b>Profit: ${money(b.profit)}</b></div><button class="btn primary" style="width:100%;margin-top:10px" onclick="updateBill('${b.billNo}')">Update Bill</button>`;editModal.classList.add('show')}
+function closeModal(){editModal.classList.remove('show')}
+function updateBill(no){let b=db.bills.find(x=>x.billNo===no);b.patient=ePatient.value.trim();b.date=eDate.value;b.b2c=Number(eB2C.value||0);b.collection=Number(eCC.value||0);b.report=Number(eRC.value||0);b.discount=b.mrp-b.b2c;b.profit=b.b2c-b.b2b-b.collection-b.report;saveDB();closeModal();renderBills();renderDashboard();toast('Bill updated')}
+function deleteBill(no){if(!confirm('Delete this bill?'))return;db.bills=db.bills.filter(b=>b.billNo!==no);saveDB();renderBills();renderDashboard();toast('Bill deleted')}
+function renderTests(){let q=(masterSearch.value||'').toLowerCase(),arr=db.tests.filter(t=>t.name.toLowerCase().includes(q));testList.innerHTML=arr.map((t,i)=>`<div class="card" style="margin-top:8px"><div class="billhead"><div><b>${esc(t.name)}</b><div class="muted">MRP ${money(t.mrp)} • B2B ${money(t.b2b)}</div></div><button class="btn danger" onclick="deleteTest('${attr(t.name)}')">Delete</button></div></div>`).join('')||'<div class="empty">No tests</div>'}
+function addTest(){let n=newTestName.value.trim(),m=Number(newTestMRP.value),b=Number(newTestB2B.value);if(!n){toast('Test name required');return}db.tests.push({name:n,mrp:m,b2b:b});saveDB();newTestName.value='';newTestMRP.value='';newTestB2B.value='';renderTests();toast('Test added')}
+function deleteTest(n){db.tests=db.tests.filter(t=>t.name!==n);saveDB();renderTests()}
+function importTests(ev){let f=ev.target.files[0];if(!f)return;let r=new FileReader();r.onload=e=>{try{let wb=XLSX.read(e.target.result,{type:'array'}),rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''});let count=0;rows.forEach(x=>{let n=x['Test Name']||x['Name']||x['test_name'];let m=x['MRP']||x['mrp'];let b=x['B2B Rate']||x['B2B']||x['b2b'];if(n!==undefined&&n!==''){db.tests.push({name:String(n),mrp:Number(m)||0,b2b:Number(b)||0});count++}});saveDB();renderTests();toast(count+' tests imported')}catch(err){alert('Excel format could not be read. Use columns: Test Name, MRP, B2B Rate')}};r.readAsArrayBuffer(f);ev.target.value=''}
+function exportTests(){let rows=db.tests.map(t=>({'Test Name':t.name,'MRP':t.mrp,'B2B Rate':t.b2b}));downloadXlsx(rows,'Test_Master.xlsx','Test Master')}
+function exportBills(){let rows=[];db.bills.forEach(b=>b.tests.forEach(t=>rows.push({'Bill No':b.billNo,'Date':b.date,'Patient Name':b.patient,'Test Name':t.name,'Test MRP':t.mrp,'Test B2B':t.b2b,'Total MRP':b.mrp,'Total B2B':b.b2b,'Total B2C':b.b2c,'Discount':b.discount,'Collection Charges':b.collection,'Report Charges':b.report,'Profit':b.profit})));downloadXlsx(rows,'Kalyan_Pathlab_Bills.xlsx','Bills')}
+function exportMonthly(){let ym=reportMonth.value,arr=db.bills.filter(b=>!ym||b.date.startsWith(ym));let rows=arr.map(b=>({'Bill No':b.billNo,'Date':b.date,'Patient Name':b.patient,'Total MRP':b.mrp,'Total B2B':b.b2b,'Total B2C':b.b2c,'Discount':b.discount,'Collection Charges':b.collection,'Report Charges':b.report,'Profit':b.profit}));downloadXlsx(rows,'Kalyan_Pathlab_Monthly_Report.xlsx','Monthly Report')}
+function downloadXlsx(rows,name,sheet){let ws=XLSX.utils.json_to_sheet(rows),wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,sheet);XLSX.writeFile(wb,name)}
+function renderReports(){let ym=reportMonth.value||(new Date().toISOString().slice(0,7));reportMonth.value=ym;let a=db.bills.filter(b=>b.date.startsWith(ym));let sum=k=>a.reduce((x,b)=>x+Number(b[k]||0),0);reportData.innerHTML=`<h3>${ym}</h3><div class="summary"><div class="mini"><small>Bills</small><b>${a.length}</b></div><div class="mini"><small>Total MRP</small><b>${money(sum('mrp'))}</b></div><div class="mini"><small>B2C</small><b>${money(sum('b2c'))}</b></div><div class="mini"><small>B2B</small><b>${money(sum('b2b'))}</b></div><div class="mini"><small>Charges</small><b>${money(sum('collection')+sum('report'))}</b></div><div class="mini"><small>Profit</small><b class="green">${money(sum('profit'))}</b></div></div>`}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function attr(s){return esc(s)}
+billDate.value=today();billNo.value=id();renderDashboard();renderTests();renderBills();renderReports();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();window.deferredPrompt=e});
+</script>
+</body>
+</html>
