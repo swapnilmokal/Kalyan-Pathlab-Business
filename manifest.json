@@ -1,9 +1,17 @@
 {
   "name":"Kalyan Pathlab Business",
   "short_name":"Kalyan Pathlab",
+  "description":"Smart Billing & Management for Your Pathology Lab — by Swapnil Mokal",
   "start_url":"./index.html",
+  "scope":"./",
   "display":"standalone",
+  "orientation":"portrait",
+  "lang":"en",
   "background_color":"#f4f7fb",
   "theme_color":"#0b4ea2",
-  "icons":[{"src":"logo.png","sizes":"192x192","type":"image/png"},{"src":"logo.png","sizes":"512x512","type":"image/png"}]
+  "icons":[
+    {"src":"logo.png","sizes":"192x192","type":"image/png","purpose":"any"},
+    {"src":"logo.png","sizes":"512x512","type":"image/png","purpose":"any"},
+    {"src":"logo.png","sizes":"512x512","type":"image/png","purpose":"maskable"}
+  ]
 }

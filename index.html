@@ -9,93 +9,1013 @@
 <link rel="icon" href="logo.png">
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 <style>
-:root{--blue:#0b4ea2;--blue2:#1677e8;--red:#e31b23;--green:#148a52;--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#687386;--border:#dce3ee}
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text)}button,input{font:inherit}button{cursor:pointer}.app{min-height:100vh}.top{position:sticky;top:0;z-index:10;background:var(--blue);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 10px #0002}.top img{width:42px;height:42px;border-radius:50%;object-fit:cover;background:#fff}.brand{font-weight:800;font-size:18px}.sub{font-size:11px;opacity:.85}.content{max-width:1050px;margin:auto;padding:16px 16px 88px}.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(5,1fr);z-index:20}.nav button{border:0;background:#fff;padding:9px 2px;color:#667;font-size:11px}.nav button.active{color:var(--blue);font-weight:800}.nav span{display:block;font-size:19px}.screen{display:none}.screen.active{display:block}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;box-shadow:0 2px 8px #1d35571a}.stat .label{font-size:12px;color:var(--muted)}.stat .value{font-size:22px;font-weight:800;margin-top:4px}.blue{color:var(--blue)}.green{color:var(--green)}.red{color:var(--red)}h2{font-size:20px;margin:4px 0 14px}h3{font-size:15px;margin:0 0 10px}.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}.field{margin-bottom:10px}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;font-weight:700}.field input,.field select{width:100%;padding:11px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;outline:none}.field input:focus{border-color:var(--blue2);box-shadow:0 0 0 3px #1677e81a}.btn{border:0;border-radius:10px;padding:11px 14px;font-weight:800}.primary{background:var(--blue2);color:#fff}.danger{background:#ffe7e7;color:#c3151d}.ghost{background:#edf4ff;color:var(--blue)}.success{background:#e7f7ee;color:var(--green)}.tests{width:100%;border-collapse:collapse;font-size:13px}.tests th,.tests td{padding:9px 6px;border-bottom:1px solid var(--border);text-align:left}.tests th{color:var(--muted);font-size:11px}.right{text-align:right!important}.suggest{position:relative}.suggestbox{position:absolute;left:0;right:0;top:100%;z-index:30;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 20px #0002;max-height:220px;overflow:auto}.suggestbox div{padding:10px 12px;border-bottom:1px solid #eee}.suggestbox div:hover{background:#eef5ff}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.summary .mini{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:10px}.mini small{display:block;color:var(--muted)}.mini b{font-size:16px}.bill{margin-bottom:10px}.billhead{display:flex;justify-content:space-between;gap:8px}.billname{font-weight:800}.muted{color:var(--muted);font-size:12px}.empty{text-align:center;padding:30px;color:var(--muted)}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.toolbar .field{flex:1;min-width:180px}.month{font-weight:800}.toast{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);background:#172033;color:#fff;padding:10px 16px;border-radius:10px;display:none;z-index:50}.modal{position:fixed;inset:0;background:#0006;display:none;align-items:flex-end;z-index:40}.modal.show{display:flex}.sheet{background:#fff;width:100%;max-height:92vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px}.test-editor{border:1px solid var(--border);border-radius:12px;padding:10px;margin-top:8px}.install{display:none}@media(min-width:700px){.nav{position:static;max-width:1050px;margin:auto;border:0;background:transparent;grid-template-columns:repeat(5,auto);justify-content:flex-start;gap:8px;padding:8px 16px}.nav button{background:#fff;border:1px solid var(--border);border-radius:10px}.content{padding-top:8px}.modal{align-items:center;justify-content:center}.sheet{max-width:760px;border-radius:18px}.grid{grid-template-columns:repeat(4,1fr)}}@media(max-width:650px){.grid{grid-template-columns:repeat(2,1fr)}.summary{grid-template-columns:1fr 1fr}.row{flex-direction:column;align-items:stretch}.row>*{width:100%}}
+:root{--blue:#0b4ea2;--blue2:#1677e8;--red:#e31b23;--green:#148a52;--orange:#c97a12;--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#6b7686;--border:#dde3ee}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{color:inherit}
+.app{min-height:100vh;padding-bottom:80px}
+
+/* Splash */
+#splash{position:fixed;inset:0;background:linear-gradient(180deg,#eef4fc,#f4f7fb);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+#splash img{width:110px;height:110px;border-radius:50%;box-shadow:0 8px 24px #0b4ea233;margin-bottom:18px}
+#splash .sname{font-size:26px;font-weight:900;color:var(--blue);letter-spacing:.2px}
+#splash .sname b{color:var(--red)}
+#splash .stag{color:var(--muted);margin-top:6px;font-size:13px}
+#splash .sbar{width:200px;height:6px;background:#dce8fb;border-radius:6px;margin-top:26px;overflow:hidden}
+#splash .sbar i{display:block;height:100%;width:30%;background:linear-gradient(90deg,var(--blue),var(--red));border-radius:6px;animation:load 1.1s ease-in-out infinite}
+@keyframes load{0%{margin-left:-30%}100%{margin-left:100%}}
+
+/* Top bar */
+.top{position:sticky;top:0;z-index:10;background:linear-gradient(135deg,var(--blue),#0d5cb8);color:#fff;padding:11px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 10px #0002;min-height:26px}
+.top .iconbtn{background:transparent;border:0;color:#fff;padding:5px 8px;line-height:1;border-radius:8px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+.top .iconbtn:active{background:#ffffff22}
+.top .ttitle{flex:1;font-weight:800;font-size:16px;letter-spacing:.1px}
+.top .brandbtn{display:flex;align-items:center;gap:9px;background:transparent;border:0;color:#fff;padding:2px 2px 2px 0;flex:1;text-align:left}
+.top .brandbtn:active{opacity:.85}
+.top .tlogo{width:32px;height:32px;border-radius:50%;object-fit:cover;background:#fff;flex-shrink:0}
+.top .brandtext{display:flex;flex-direction:column}
+.top .brandtext b{font-size:14.5px;font-weight:800;letter-spacing:.1px}
+.top .brandtext span{font-size:10.5px;opacity:.88;font-weight:600}
+
+.content{max-width:1050px;margin:auto;padding:14px 14px 90px}
+
+/* Bottom nav */
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(5,1fr);z-index:20;box-shadow:0 -2px 10px #0001}
+.nav button{border:0;background:#fff;padding:8px 2px 10px;color:#8592a3;font-size:10.5px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:3px}
+.nav button.active{color:var(--blue);font-weight:800}
+.nav button svg{width:21px;height:21px}
+
+.screen{display:none}
+.screen.active{display:block}
+
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;box-shadow:0 2px 10px #1d35570f}
+.staticon{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+.staticon svg{width:16px;height:16px}
+.icb-blue{background:#e7f0ff;color:var(--blue)}
+.icb-green{background:#e6f8ee;color:var(--green)}
+.icb-red{background:#ffe9ea;color:var(--red)}
+.icb-orange{background:#fff3e0;color:var(--orange)}
+.stat .label{font-size:11.5px;color:var(--muted);font-weight:600}
+.stat .value{font-size:20px;font-weight:800;margin-top:4px}
+.blue{color:var(--blue)}.green{color:var(--green)}.red{color:var(--red)}.orange{color:var(--orange)}
+h2{font-size:19px;margin:2px 0 12px;font-weight:800;letter-spacing:.1px}
+h3{font-size:14.5px;margin:0 0 10px;font-weight:800;letter-spacing:.1px}
+.row{display:flex;gap:10px;align-items:center}
+.row>*{flex:1}
+.field{margin-bottom:10px}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;font-weight:700}
+.field input,.field select{width:100%;padding:11px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;outline:none}
+.field input:focus,.field select:focus{border-color:var(--blue2);box-shadow:0 0 0 3px #1677e81a}
+.btn{border:0;border-radius:10px;padding:11px 14px;font-weight:800;font-size:13.5px;transition:filter .15s}
+.btn:active{filter:brightness(.94)}
+.btn svg{width:16px;height:16px}
+.iconlabel{display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+.primary{background:var(--blue2);color:#fff}
+.danger{background:#ffe7e7;color:#c3151d}
+.ghost{background:#edf4ff;color:var(--blue)}
+.success{background:#e6f8ee;color:var(--green)}
+.tests{width:100%;border-collapse:collapse;font-size:12.5px}
+.tests th,.tests td{padding:9px 7px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap}
+.tests th{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.3px}
+.right{text-align:right!important}
+.suggest{position:relative}
+.suggestbox{position:absolute;left:0;right:0;top:100%;z-index:30;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 20px #0002;max-height:240px;overflow:auto}
+.suggestbox div{padding:10px 12px;border-bottom:1px solid #eee}
+.suggestbox div:hover{background:#eef5ff}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.summary .mini{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:10px}
+.mini small{display:block;color:var(--muted);font-size:10.5px;font-weight:600}
+.mini b{font-size:14.5px}
+.profitbox{background:#e9f8ef;border-radius:14px;padding:14px;margin-top:10px}
+.profitbox .muted{margin-bottom:2px}
+.profitbig{font-size:26px;font-weight:900;color:var(--green)}
+.bill{margin-bottom:10px}
+.billrow{display:flex;align-items:center;gap:10px;cursor:pointer}
+.billrow .chev{color:#b7c1d1;font-size:20px}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0}
+.billhead{display:flex;justify-content:space-between;gap:8px}
+.billname{font-weight:800}
+.muted{color:var(--muted);font-size:12px}
+.empty{text-align:center;padding:26px 10px;color:var(--muted);font-size:13px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.toolbar .field{flex:1;min-width:160px;margin-bottom:0}
+.tabs{display:flex;gap:6px;background:#eef2f8;border-radius:11px;padding:4px;margin-bottom:12px}
+.tabs button{flex:1;border:0;background:transparent;padding:9px 6px;border-radius:8px;font-weight:700;font-size:12.5px;color:var(--muted)}
+.tabs button.active{background:#fff;color:var(--blue);box-shadow:0 2px 6px #0002}
+.monthnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.monthnav button{border:0;background:#eef4ff;color:var(--blue);width:38px;height:38px;border-radius:10px;font-weight:900;display:inline-flex;align-items:center;justify-content:center}
+.monthnav .mlabel{font-weight:800;font-size:16px}
+.toast{position:fixed;left:50%;bottom:88px;transform:translateX(-50%);background:#172033;color:#fff;padding:10px 16px;border-radius:10px;display:none;z-index:60;font-size:13.5px;max-width:88%;text-align:center}
+.morebtns{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.moretile{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px 12px;text-align:center;box-shadow:0 2px 10px #1d35570f}
+.moretile .ic{width:38px;height:38px;border-radius:11px;background:#e7f0ff;color:var(--blue);display:flex;align-items:center;justify-content:center;margin:0 auto 9px}
+.moretile .ic svg{width:19px;height:19px}
+.moretile b{font-size:13px;display:block}
+.moretile small{color:var(--muted);font-size:11px;display:block;margin-top:3px}
+.formula{background:#f0f6ff;border:1px dashed var(--blue2);border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.7}
+.formula code{background:#fff;border:1px solid var(--border);border-radius:6px;padding:1px 6px;font-weight:700;color:var(--blue)}
+.barwrap{margin-top:14px}
+.barwrap .barrow{margin-bottom:10px}
+.barwrap .barlabel{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px}
+.barwrap .bartrack{height:10px;background:#eef2f8;border-radius:6px;overflow:hidden}
+.barwrap .barfill{height:100%;border-radius:6px}
+.samplebox{overflow:auto;margin-bottom:12px}
+.banner-ok{background:#e7f7ee;color:var(--green);border-radius:12px;padding:12px 14px;font-weight:700;font-size:13.5px;display:flex;gap:8px;align-items:center}
+.banner-err{background:#ffe7e7;color:#c3151d;border-radius:12px;padding:12px 14px;font-weight:700;font-size:13.5px}
+
+/* summary list rows (Dashboard / Reports) */
+.sumlist{margin-top:2px}
+.sumrow{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13.5px}
+.sumrow:last-child{border-bottom:0}
+.sumrow.highlight{padding-top:12px}
+.sumrow.highlight b{color:var(--green);font-size:17px}
+.sumleft{display:flex;align-items:center;color:var(--text)}
+.sicon{width:26px;height:26px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;margin-right:9px;flex-shrink:0}
+.sicon svg{width:14px;height:14px}
+
+/* Per-test line editor */
+.testline{border:1px solid var(--border);border-radius:12px;padding:11px 12px;margin-bottom:10px;background:#fbfcfe}
+.tl-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
+.tl-head b{font-size:14px}
+.tl-remove{border:0;background:#ffe7e7;color:#c3151d;width:26px;height:26px;border-radius:8px;font-weight:900;line-height:1;padding:0;font-size:15px}
+.tl-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.tl-f label{display:block;font-size:10.5px;color:var(--muted);margin-bottom:3px;font-weight:700}
+.tl-f input{width:100%;padding:8px 9px;border:1px solid var(--border);border-radius:8px;font-size:13px}
+.tl-f input:focus{border-color:var(--blue2);box-shadow:0 0 0 3px #1677e81a;outline:none}
+.tl-profit{margin-top:9px;font-size:12px;color:var(--muted);text-align:right}
+.tl-profit b{color:var(--green);font-size:14.5px;margin-left:4px}
+@media(min-width:520px){.tl-grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:700px){.tl-grid{grid-template-columns:repeat(5,1fr)}}
+
+@media(min-width:700px){
+  .content{padding-top:10px}
+  .grid{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:650px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .summary{grid-template-columns:1fr 1fr}
+  .row{flex-direction:column;align-items:stretch}
+  .row>*{width:100%}
+  .morebtns{grid-template-columns:repeat(2,1fr)}
+}
 </style>
 </head>
 <body>
-<div class="app">
-<header class="top"><img src="logo.png"><div><div class="brand">Kalyan Pathlab Business</div><div class="sub">Smart Billing • Test Master • Reports • Profit</div></div></header>
-<main class="content">
-<section id="dashboard" class="screen active">
-<h2>Dashboard</h2><div class="grid">
-<div class="card stat"><div class="label">Total Bills</div><div id="sBills" class="value blue">0</div></div>
-<div class="card stat"><div class="label">Total B2C</div><div id="sB2C" class="value green">₹0</div></div>
-<div class="card stat"><div class="label">Total B2B</div><div id="sB2B" class="value red">₹0</div></div>
-<div class="card stat"><div class="label">Total Profit</div><div id="sProfit" class="value green">₹0</div></div>
-</div><div class="card" style="margin-top:12px"><h3>Monthly Summary</h3><div id="monthlySummary"></div></div>
-</section>
-<section id="newbill" class="screen"><div class="row" style="margin-bottom:12px"><h2 style="flex:1">New Bill</h2><button class="btn ghost" id="clearBillBtn">Clear</button></div>
-<div class="card"><div class="row"><div class="field"><label>Bill No.</label><input id="billNo" readonly></div><div class="field"><label>Date</label><input id="billDate" type="date"></div></div>
-<div class="field"><label>Patient Name *</label><input id="patient" placeholder="Patient name"></div>
-<div class="field suggest"><label>Add Test</label><input id="testSearch" placeholder="Type test name (e.g. CBC)" autocomplete="off"><div id="suggestBox" class="suggestbox" style="display:none"></div></div>
-<div class="card" style="padding:8px"><table class="tests"><thead><tr><th>Test</th><th>MRP</th><th>B2B</th><th></th></tr></thead><tbody id="billTests"></tbody></table><div id="noTests" class="empty">No tests added</div></div>
-<div class="summary"><div class="mini"><small>Total MRP</small><b id="totalMRP">₹0</b></div><div class="mini"><small>Total B2B</small><b id="totalB2B">₹0</b></div><div class="mini"><small>Discount</small><b id="discount">₹0</b></div></div>
-<div class="row" style="margin-top:10px"><div class="field"><label>Total B2C Amount (Patient Pay)</label><input id="b2c" type="number" min="0" value="0"></div><div class="field"><label>Collection Charges (once)</label><input id="collection" type="number" min="0" value="0"></div><div class="field"><label>Report Charges (once)</label><input id="report" type="number" min="0" value="0"></div></div>
-<div class="card" style="background:#e9f8ef;margin-top:10px"><div class="muted">Profit = B2C − Total B2B − Collection − Report</div><div id="profit" style="font-size:25px;font-weight:900;color:var(--green)">₹0</div></div>
-<button class="btn primary" id="saveBillBtn" style="width:100%;margin-top:12px">Save Bill</button></div></section>
-<section id="bills" class="screen"><h2>Bills</h2><div class="toolbar"><div class="field"><input id="billSearch" placeholder="Search Patient Name / Bill No."></div><button class="btn ghost" id="exportBillsBtn">Export Excel</button></div><div id="billList"></div></section>
-<section id="tests" class="screen"><h2>Test Master</h2><div class="card"><div class="toolbar"><button class="btn primary" id="importExcelBtn">Import Excel</button><button class="btn ghost" id="exportTestsBtn">Export Excel</button><input id="excelFile" type="file" accept=".xlsx,.xls,.csv" style="display:none"></div>
-<div class="field"><label>Test Search</label><input id="masterSearch" placeholder="Search test..."></div><div class="row"><div class="field"><label>Test Name</label><input id="newTestName"></div><div class="field"><label>MRP</label><input id="newTestMRP" type="number" min="0"></div><div class="field"><label>B2B Rate</label><input id="newTestB2B" type="number" min="0"></div><button class="btn primary" id="addTestBtn" style="margin-bottom:10px">Add</button></div>
-<div id="testList"></div></div></section>
-<section id="reports" class="screen"><h2>Reports</h2><div class="card"><div class="row"><div class="field"><label>Month</label><input id="reportMonth" type="month"></div><button class="btn primary" id="exportMonthlyBtn">Export Monthly Excel</button></div><div id="reportData"></div></div></section>
-</main>
-<nav class="nav"><button class="active" data-screen="dashboard"><span>⌂</span>Dashboard</button><button data-screen="newbill"><span>＋</span>New Bill</button><button data-screen="bills"><span>▣</span>Bills</button><button data-screen="tests"><span>⌕</span>Tests</button><button data-screen="reports"><span>▥</span>Reports</button></nav>
-<div id="toast" class="toast"></div>
-<div id="editModal" class="modal"><div class="sheet"><div class="row"><h2 style="flex:1">Edit Bill</h2><button class="btn ghost" id="closeModalBtn">Close</button></div><div id="editBody"></div></div></div>
+<div id="splash">
+  <img src="logo.png" alt="logo">
+  <div class="sname">Kalyan Pathlab <b>Business</b></div>
+  <div class="stag">Smart Billing &amp; Management for Your Pathology Lab</div>
+  <div class="sbar"><i></i></div>
 </div>
+
+<div class="app">
+<header class="top" id="topbar"></header>
+
+<main class="content">
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="screen">
+  <h2>Today's Summary <span class="muted" id="todayLabel"></span></h2>
+  <div class="grid">
+    <div class="card stat"><div class="staticon icb-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l3 3v17H6z"/><path d="M14 2v4h4"/></svg></div><div class="label">Total Bills</div><div id="tBills" class="value blue">0</div></div>
+    <div class="card stat"><div class="staticon icb-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h11M6 9h11M8 4c4 0 6 2 6 4.5S12 13 8 13l8 8"/></svg></div><div class="label">Total B2C</div><div id="tB2C" class="value green">₹0</div></div>
+    <div class="card stat"><div class="staticon icb-red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div><div class="label">Total B2B</div><div id="tB2B" class="value red">₹0</div></div>
+    <div class="card stat"><div class="staticon icb-orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg></div><div class="label">Today's Profit</div><div id="tProfit" class="value orange">₹0</div></div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <h3>Monthly Summary <span class="muted" id="monthLabel"></span></h3>
+    <div id="monthlySummary"></div>
+  </div>
+</section>
+
+<!-- NEW BILL -->
+<section id="newbill" class="screen">
+  <div class="card">
+    <div class="row">
+      <div class="field"><label>Bill No.</label><input id="billNo" readonly></div>
+      <div class="field"><label>Date</label><input id="billDate" type="date"></div>
+    </div>
+    <div class="field"><label>Patient Name *</label><input id="patient" placeholder="Patient name"></div>
+    <div class="field suggest"><label>Add Test</label><input id="testSearch" placeholder="Type test name (e.g. CBC)" autocomplete="off"><div id="suggestBox" class="suggestbox" style="display:none"></div></div>
+
+    <div id="billTestLines"></div>
+    <div id="noTests" class="empty">No tests added yet. Search and add a test above — you can add multiple tests one after another.</div>
+
+    <div class="summary">
+      <div class="mini"><small>Total MRP</small><b id="totalMRP">₹0</b></div>
+      <div class="mini"><small>Total B2C</small><b id="totalB2C">₹0</b></div>
+      <div class="mini"><small>Total B2B</small><b id="totalB2B">₹0</b></div>
+      <div class="mini"><small>Collection Charges</small><b id="totalCC">₹0</b></div>
+      <div class="mini"><small>Report Charges</small><b id="totalRC">₹0</b></div>
+      <div class="mini"><small>Discount</small><b id="totalDiscount">₹0</b></div>
+    </div>
+    <div class="profitbox">
+      <div class="muted">Final Profit = Total B2C − Total B2B − Collection − Report</div>
+      <div id="billProfit" class="profitbig">₹0</div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <button class="btn ghost" id="clearBillBtn">Clear</button>
+      <button class="btn primary" id="saveBillBtn">Save Bill</button>
+    </div>
+  </div>
+</section>
+
+<!-- BILLS -->
+<section id="bills" class="screen">
+  <div class="card">
+    <div class="field"><input id="billSearch" placeholder="Search by Patient Name / Bill No."></div>
+    <div class="row">
+      <div class="field"><label>From Date</label><input id="fromDate" type="date"></div>
+      <div class="field"><label>To Date</label><input id="toDate" type="date"></div>
+    </div>
+    <div class="tabs" id="billTabs">
+      <button class="active" data-tab="all">All</button>
+      <button data-tab="today">Today</button>
+      <button data-tab="month">This Month</button>
+    </div>
+  </div>
+  <div id="billList" style="margin-top:12px"></div>
+</section>
+
+<!-- REPORTS -->
+<section id="reports" class="screen">
+  <div class="tabs" id="reportTabs">
+    <button class="active" data-tab="daily">Daily</button>
+    <button data-tab="monthly">Monthly</button>
+    <button data-tab="business">Business</button>
+  </div>
+  <div id="dailyPane">
+    <div class="card"><div class="field"><label>Select Date</label><input id="dailyDate" type="date"></div></div>
+  </div>
+  <div id="monthlyPane" style="display:none">
+    <div class="monthnav"><button id="prevMonth"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><div class="mlabel" id="mlabel">Month</div><button id="nextMonth"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div>
+  </div>
+  <div class="card" style="margin-top:12px" id="reportData"></div>
+  <button class="btn ghost iconlabel" id="exportReportBtn" style="width:100%;margin-top:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V9m0 0 4 4m-4-4-4 4"/><path d="M4 5h16"/></svg>Export to Excel</button>
+</section>
+
+<!-- MORE -->
+<section id="more" class="screen">
+  <h2>More</h2>
+  <div class="morebtns">
+    <button class="moretile" id="goTestMaster"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/></svg></span><b>Test Master</b><small>Manage tests, B2C &amp; B2B</small></button>
+    <button class="moretile" id="goProfit"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></span><b>Profit Analysis</b><small>Discount &amp; profit insights</small></button>
+    <button class="moretile" id="goImport"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-4-4m4 4 4-4"/><path d="M4 19h16"/></svg></span><b>Import Tests</b><small>From Test Master Excel</small></button>
+    <button class="moretile" id="goExportTests"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V9m0 0 4 4m-4-4-4 4"/><path d="M4 5h16"/></svg></span><b>Export Test Master</b><small>Download as Excel</small></button>
+    <button class="moretile" id="goExportBills"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="4" rx="1"/><rect x="3" y="10" width="18" height="4" rx="1"/><rect x="3" y="16" width="18" height="4" rx="1"/></svg></span><b>Export All Bills</b><small>Download as Excel</small></button>
+    <button class="moretile" id="goAbout"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg></span><b>About / Contact</b><small>Install app, support &amp; credits</small></button>
+  </div>
+  <div class="muted" style="text-align:center;margin-top:20px;font-size:11px">© 2026 Swapnil Mokal · All rights reserved</div>
+</section>
+
+<!-- TEST MASTER -->
+<section id="testmaster" class="screen">
+  <div class="card">
+    <div class="toolbar">
+      <button class="btn primary iconlabel" id="importExcelBtnTM"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-4-4m4 4 4-4"/><path d="M4 19h16"/></svg>Import from Excel</button>
+      <button class="btn ghost iconlabel" id="exportTestsBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V9m0 0 4 4m-4-4-4 4"/><path d="M4 5h16"/></svg>Export to Excel</button>
+      <input id="excelFile" type="file" accept=".xlsx,.xls,.csv" style="display:none">
+    </div>
+    <div class="field"><label>Search Test Name</label><input id="masterSearch" placeholder="Search test..."></div>
+    <div class="row">
+      <div class="field"><label>Test Name</label><input id="newTestName"></div>
+      <div class="field"><label>B2C</label><input id="newTestB2C" type="number" min="0"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>B2B</label><input id="newTestB2B" type="number" min="0"></div>
+      <button class="btn primary" id="addTestBtn" style="margin-bottom:10px;flex:1">Save Test</button>
+    </div>
+    <div id="testList"></div>
+  </div>
+</section>
+
+<!-- PROFIT ANALYSIS -->
+<section id="profit" class="screen">
+  <div class="tabs" id="profitTabs">
+    <button class="active" data-tab="today">Today</button>
+    <button data-tab="month">This Month</button>
+    <button data-tab="all">All Time</button>
+    <button data-tab="custom">Custom</button>
+  </div>
+  <div class="row" id="profitCustomRange" style="display:none">
+    <div class="field"><label>From Date</label><input id="pFrom" type="date"></div>
+    <div class="field"><label>To Date</label><input id="pTo" type="date"></div>
+  </div>
+  <div class="card">
+    <h3>Calculation Formula</h3>
+    <div class="formula">
+      Each test line has its own <code>B2C</code>, <code>B2B</code>, <code>Collection</code> and <code>Report</code> charges.<br>
+      <code>Line Profit</code> = B2C − B2B − Collection − Report<br>
+      <code>Discount</code> = Total MRP − Total B2C<br>
+      <code>Final Profit</code> = Total B2C − Total B2B − Total Collection − Total Report (sum of all lines)
+    </div>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <h3>Breakdown</h3>
+    <div class="summary" id="profitSummary"></div>
+    <div class="profitbox">
+      <div class="muted">Net Profit</div>
+      <div id="profitNet" class="profitbig">₹0</div>
+      <div class="muted" id="profitMargin" style="margin-top:4px"></div>
+    </div>
+    <div class="barwrap" id="profitBars"></div>
+  </div>
+</section>
+
+<!-- IMPORT TESTS -->
+<section id="importtests" class="screen">
+  <div class="card">
+    <h3>Test Master Excel Format (Sample)</h3>
+    <div class="samplebox">
+      <table class="tests">
+        <thead><tr><th>Test Name</th><th>B2C</th><th>B2B</th></tr></thead>
+        <tbody>
+          <tr><td>CBC</td><td>450</td><td>300</td></tr>
+          <tr><td>LFT</td><td>700</td><td>500</td></tr>
+          <tr><td>KFT</td><td>550</td><td>400</td></tr>
+          <tr><td>TSH</td><td>600</td><td>450</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="btn primary" id="chooseExcelBtn" style="width:100%">Choose Excel File</button>
+    <div class="muted" style="text-align:center;margin-top:8px">Supported Format: .xlsx, .xls (Max 5MB)</div>
+    <div id="importResult" style="margin-top:14px"></div>
+  </div>
+</section>
+
+<!-- BILL DETAILS -->
+<section id="billdetails" class="screen">
+  <div class="card" id="billDetailsBody"></div>
+  <div class="row" style="margin-top:12px">
+    <button class="btn ghost" id="editBillBtn">Edit</button>
+    <button class="btn danger" id="deleteBillBtn">Delete</button>
+  </div>
+  <div class="row" style="margin-top:10px">
+    <button class="btn success iconlabel" id="shareWhatsappBtn"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3.1.8.8-3-.2-.3A8 8 0 1 1 12 20Zm4.4-5.9c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.1-.3.2-.5.1-.7-.3-1.5-.8-2.1-1.5-.5-.5-.8-1.1-.9-1.3-.1-.2 0-.3.1-.5.1-.1.2-.3.4-.4.1-.1.2-.3.2-.4.1-.1 0-.3 0-.4-.1-.1-.5-1.3-.7-1.7-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.1 1.6 2.5 3.9 3.4.5.2.9.4 1.3.5.5.2 1 .1 1.4.1.4-.1 1.4-.6 1.6-1.1.2-.5.2-.9.1-1z"/></svg>WhatsApp</button>
+    <button class="btn ghost iconlabel" id="shareEmailBtn"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Email</button>
+  </div>
+</section>
+
+<!-- EDIT BILL -->
+<section id="editbill" class="screen">
+  <div class="card">
+    <div class="row">
+      <div class="field"><label>Bill No.</label><input id="eBillNo" readonly></div>
+      <div class="field"><label>Date</label><input id="eDate" type="date"></div>
+    </div>
+    <div class="field"><label>Patient Name *</label><input id="ePatient"></div>
+    <div class="field suggest"><label>Add / Change Test</label><input id="eTestSearch" placeholder="Type test name"><div id="eSuggest" class="suggestbox" style="display:none"></div></div>
+
+    <div id="eTestLines"></div>
+    <div id="eNoTests" class="empty">No tests added</div>
+
+    <div class="summary">
+      <div class="mini"><small>Total MRP</small><b id="eMRP">₹0</b></div>
+      <div class="mini"><small>Total B2C</small><b id="eB2Ctot">₹0</b></div>
+      <div class="mini"><small>Total B2B</small><b id="eB2B">₹0</b></div>
+      <div class="mini"><small>Collection Charges</small><b id="eCCtot">₹0</b></div>
+      <div class="mini"><small>Report Charges</small><b id="eRCtot">₹0</b></div>
+      <div class="mini"><small>Discount</small><b id="eDiscount">₹0</b></div>
+    </div>
+    <div class="profitbox">
+      <div class="muted">Final Profit = Total B2C − Total B2B − Collection − Report</div>
+      <div id="eProfit" class="profitbig">₹0</div>
+    </div>
+    <button class="btn primary" id="updateBillBtn" style="width:100%;margin-top:12px">Update Bill</button>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="screen">
+  <div class="card" style="text-align:center">
+    <img src="logo.png" style="width:80px;height:80px;border-radius:50%;margin-bottom:10px">
+    <div style="font-size:19px;font-weight:900"><span style="color:var(--blue)">Kalyan Pathlab</span> <span style="color:var(--red)">Business</span></div>
+    <div class="muted" style="margin-top:4px">Smart Billing &amp; Management for Your Pathology Lab</div>
+  </div>
+
+  <div class="card" style="margin-top:12px" id="installCard">
+    <h3>Install App</h3>
+    <div class="muted" style="margin-bottom:10px">Install Kalyan Pathlab Business on your phone's home screen for quick, offline-friendly access — no app store needed.</div>
+    <button class="btn primary iconlabel" id="installBtn" style="width:100%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v6m0 0-2.5-2.5M12 14l2.5-2.5"/></svg>Install App</button>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h3>Contact &amp; Support</h3>
+    <a class="btn success iconlabel" style="margin-bottom:8px" href="https://wa.me/919870020674" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3.1.8.8-3-.2-.3A8 8 0 1 1 12 20Zm4.4-5.9c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.1-.3.2-.5.1-.7-.3-1.5-.8-2.1-1.5-.5-.5-.8-1.1-.9-1.3-.1-.2 0-.3.1-.5.1-.1.2-.3.4-.4.1-.1.2-.3.2-.4.1-.1 0-.3 0-.4-.1-.1-.5-1.3-.7-1.7-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.1 1.6 2.5 3.9 3.4.5.2.9.4 1.3.5.5.2 1 .1 1.4.1.4-.1 1.4-.6 1.6-1.1.2-.5.2-.9.1-1z"/></svg>Chat on WhatsApp — +91 98700 20674</a>
+    <a class="btn ghost iconlabel" href="mailto:kalyan.pathlab.21@gmail.com"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>kalyan.pathlab.21@gmail.com</a>
+  </div>
+
+  <div class="card" style="margin-top:12px;text-align:center">
+    <div class="muted">Developed by</div>
+    <b style="font-size:15px">Swapnil Mokal</b>
+    <div class="muted" style="margin-top:10px;font-size:11.5px">© 2026 Swapnil Mokal. All rights reserved.</div>
+  </div>
+</section>
+
+</main>
+
+<nav class="nav">
+  <button data-tab="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/></svg>Dashboard</button>
+  <button data-tab="newbill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>New Bill</button>
+  <button data-tab="bills"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="4" rx="1"/><rect x="3" y="10" width="18" height="4" rx="1"/><rect x="3" y="16" width="18" height="4" rx="1"/></svg>Bills</button>
+  <button data-tab="reports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Reports</button>
+  <button data-tab="more"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>More</button>
+</nav>
+<div id="toast" class="toast"></div>
+</div>
+
 <script>
-const KEY='kalyan_pathlab_business_v2';
-const DEFAULT_TESTS=[{name:'CBC',mrp:500,b2b:250},{name:'Lipid Profile',mrp:800,b2b:400},{name:'LFT',mrp:700,b2b:350},{name:'KFT',mrp:600,b2b:300},{name:'TSH',mrp:700,b2b:350}];
+const KEY='kalyan_pathlab_business_v4';
+const LAB_WHATSAPP='919870020674';
+const LAB_EMAIL='kalyan.pathlab.21@gmail.com';
+const DEFAULT_TESTS=[
+  {name:'CBC',b2c:450,b2b:300},
+  {name:'LFT',b2c:700,b2b:500},
+  {name:'KFT',b2c:550,b2b:400},
+  {name:'TSH',b2c:600,b2b:450},
+  {name:'HbA1c',b2c:800,b2b:600},
+  {name:'Vitamin D',b2c:1300,b2b:1000},
+  {name:'HBsAg',b2c:450,b2b:350},
+  {name:'HIV',b2c:550,b2b:400}
+];
 const $=id=>document.getElementById(id);
-let db=loadDB(), currentTests=[];
-function loadDB(){try{const raw=localStorage.getItem(KEY);if(raw)return normalizeDB(JSON.parse(raw));const old=localStorage.getItem('kalyan_pathlab_business_v1');if(old)return normalizeDB(JSON.parse(old));}catch(e){}return {tests:DEFAULT_TESTS.map(x=>({...x})),bills:[]}}
-function normalizeDB(x){return {tests:Array.isArray(x?.tests)?x.tests.map(t=>({name:String(t.name||'').trim(),mrp:Number(t.mrp)||0,b2b:Number(t.b2b)||0})).filter(t=>t.name):DEFAULT_TESTS.map(x=>({...x})),bills:Array.isArray(x?.bills)?x.bills.map(normalizeBill):[]}}
-function normalizeBill(b){const tests=Array.isArray(b.tests)?b.tests.map(t=>({name:String(t.name||''),mrp:Number(t.mrp)||0,b2b:Number(t.b2b)||0})):[];const mrp=tests.reduce((a,t)=>a+t.mrp,0),b2b=tests.reduce((a,t)=>a+t.b2b,0),b2c=Number(b.b2c)||0,collection=Number(b.collection)||0,report=Number(b.report)||0;return {...b,tests,mrp,b2b,b2c,collection,report,discount:mrp-b2c,profit:b2c-b2b-collection-report}}
+let db=loadDB(), currentTests=[], currentBillNo=null, editTests=[];
+let billTab='all', reportTab='daily', profitTab='today', reportMonth=today().slice(0,7);
+let deferredInstallPrompt=null;
+
+/* ---------- storage ---------- */
+function loadDB(){
+  try{
+    const raw=localStorage.getItem(KEY);
+    if(raw) return normalizeDB(JSON.parse(raw));
+    const old=localStorage.getItem('kalyan_pathlab_business_v3')||localStorage.getItem('kalyan_pathlab_business_v2')||localStorage.getItem('kalyan_pathlab_business_v1');
+    if(old) return normalizeDB(JSON.parse(old));
+  }catch(e){}
+  return {tests:DEFAULT_TESTS.map(x=>({...x})),bills:[]};
+}
+function normalizeDB(x){
+  const seen=new Set();
+  const tests=(Array.isArray(x?.tests)?x.tests:[]).map(t=>({name:String(t.name||'').trim(),b2c:Number(t.b2c!==undefined?t.b2c:t.mrp)||0,b2b:Number(t.b2b)||0})).filter(t=>{
+    if(!t.name)return false;
+    const key=t.name.toLowerCase();
+    if(seen.has(key))return false; /* drop accidental duplicates from legacy data */
+    seen.add(key);return true;
+  });
+  return {
+    tests:tests.length?tests:DEFAULT_TESTS.map(x=>({...x})),
+    bills:Array.isArray(x?.bills)?x.bills.map(normalizeBill):[]
+  };
+}
+function normalizeBill(b){
+  const legacyLine=Array.isArray(b.tests)&&b.tests.length&&b.tests[0].b2c===undefined;
+  const tests=Array.isArray(b.tests)?b.tests.map(t=>({
+    name:String(t.name||''),
+    mrp:Number(t.mrp)||0,
+    b2c:t.b2c!==undefined?Number(t.b2c)||0:0,
+    b2b:Number(t.b2b)||0,
+    collection:t.collection!==undefined?Number(t.collection)||0:0,
+    report:t.report!==undefined?Number(t.report)||0:0
+  })):[];
+  const sum=k=>tests.reduce((a,t)=>a+t[k],0);
+  const mrp=sum('mrp'),b2b=sum('b2b');
+  let b2c,collection,report;
+  if(legacyLine){
+    /* old bill-level fields were the source of truth before per-line charges existed */
+    b2c=Number(b.b2c)||0;collection=Number(b.collection)||0;report=Number(b.report)||0;
+  }else{
+    b2c=sum('b2c');collection=sum('collection');report=sum('report');
+  }
+  return {...b,tests,mrp,b2c,b2b,collection,report,discount:mrp-b2c,profit:b2c-b2b-collection-report};
+}
 function saveDB(){localStorage.setItem(KEY,JSON.stringify(db))}
+function calculateBill(b){
+  const tests=(b.tests||[]).map(t=>({name:String(t.name),mrp:Number(t.mrp)||0,b2c:Number(t.b2c)||0,b2b:Number(t.b2b)||0,collection:Number(t.collection)||0,report:Number(t.report)||0}));
+  const sum=k=>tests.reduce((a,t)=>a+t[k],0);
+  const mrp=sum('mrp'),b2c=sum('b2c'),b2b=sum('b2b'),collection=sum('collection'),report=sum('report');
+  return {...b,tests,mrp,b2c,b2b,collection,report,discount:mrp-b2c,profit:b2c-b2b-collection-report};
+}
+function lineProfit(t){return (Number(t.b2c)||0)-(Number(t.b2b)||0)-(Number(t.collection)||0)-(Number(t.report)||0)}
+
+/* ---------- helpers ---------- */
 function money(n){return '₹'+Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:2})}
-function id(){const d=today().replaceAll('-','');let max=0;db.bills.forEach(b=>{const m=String(b.billNo||'').match(new RegExp('^KP'+d+'(\\d+)$'));if(m)max=Math.max(max,Number(m[1]))});return 'KP'+d+String(max+1).padStart(4,'0')}
 function today(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
-function toast(s){const t=$('toast');t.textContent=s;t.style.display='block';clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.style.display='none',1800)}
-function showScreen(name){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));$(name).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.screen===name));if(name==='dashboard')renderDashboard();if(name==='bills')renderBills();if(name==='tests')renderTests();if(name==='reports')renderReports()}
-function resetBill(){currentTests=[];$('billNo').value=id();$('billDate').value=today();$('patient').value='';$('b2c').value='0';$('collection').value='0';$('report').value='0';$('testSearch').value='';renderBillTests();calc()}
-function renderBillTests(){const tb=$('billTests');tb.innerHTML='';$('noTests').style.display=currentTests.length?'none':'block';currentTests.forEach((t,i)=>{const tr=document.createElement('tr');tr.innerHTML='<td>'+esc(t.name)+'</td><td>'+money(t.mrp)+'</td><td>'+money(t.b2b)+'</td><td class="right"><button class="btn danger remove-test" data-index="'+i+'" style="padding:5px 8px">×</button></td>';tb.appendChild(tr)})}
-function removeCurrent(i){currentTests.splice(i,1);renderBillTests();calc()}
-function calc(){const mrp=currentTests.reduce((a,t)=>a+Number(t.mrp||0),0),b2b=currentTests.reduce((a,t)=>a+Number(t.b2b||0),0),b2c=Number($('b2c').value)||0,cc=Number($('collection').value)||0,rc=Number($('report').value)||0;$('totalMRP').textContent=money(mrp);$('totalB2B').textContent=money(b2b);$('discount').textContent=money(mrp-b2c);$('profit').textContent=money(b2c-b2b-cc-rc)}
-function addTestToCurrent(t){if(!t)return;if(currentTests.some(x=>x.name.toLowerCase()===t.name.toLowerCase())){toast('Test already added');return}currentTests.push({...t});$('testSearch').value='';$('suggestBox').style.display='none';renderBillTests();calc()}
-$('testSearch').addEventListener('input',()=>{const q=$('testSearch').value.trim().toLowerCase(),box=$('suggestBox');if(!q){box.style.display='none';return}const arr=db.tests.filter(t=>t.name.toLowerCase().includes(q)).slice(0,15);box.innerHTML='';arr.forEach(t=>{const d=document.createElement('div');d.innerHTML='<b>'+esc(t.name)+'</b><br><span class="muted">MRP '+money(t.mrp)+' • B2B '+money(t.b2b)+'</span>';d.addEventListener('click',()=>addTestToCurrent(t));box.appendChild(d)});box.style.display=arr.length?'block':'none'})
-document.addEventListener('click',e=>{if(!e.target.closest('.suggest'))$('suggestBox').style.display='none'});
-$('billTests').addEventListener('click',e=>{const b=e.target.closest('.remove-test');if(b)removeCurrent(Number(b.dataset.index))});
-function saveBill(){const patient=$('patient').value.trim();if(!patient){toast('Patient Name required');return}if(!currentTests.length){toast('Add at least one test');return}const bill=calculateBill({billNo:$('billNo').value,date:$('billDate').value,patient,tests:currentTests,b2c:Number($('b2c').value)||0,collection:Number($('collection').value)||0,report:Number($('report').value)||0});db.bills.unshift(bill);saveDB();toast('Bill saved successfully');resetBill();showScreen('bills')}
-function calculateBill(b){const tests=(b.tests||[]).map(t=>({name:String(t.name),mrp:Number(t.mrp)||0,b2b:Number(t.b2b)||0}));const mrp=tests.reduce((a,t)=>a+t.mrp,0),b2b=tests.reduce((a,t)=>a+t.b2b,0),b2c=Number(b.b2c)||0,collection=Number(b.collection)||0,report=Number(b.report)||0;return {...b,tests,mrp,b2b,b2c,collection,report,discount:mrp-b2c,profit:b2c-b2b-collection-report}}
-function renderDashboard(){const bs=db.bills,sum=k=>bs.reduce((a,b)=>a+Number(b[k]||0),0);$('sBills').textContent=bs.length;$('sB2C').textContent=money(sum('b2c'));$('sB2B').textContent=money(sum('b2b'));$('sProfit').textContent=money(sum('profit'));const ym=today().slice(0,7),mb=bs.filter(b=>String(b.date||'').startsWith(ym));$('monthlySummary').innerHTML='<div class="summary"><div class="mini"><small>Bills</small><b>'+mb.length+'</b></div><div class="mini"><small>B2C Collection</small><b>'+money(mb.reduce((a,b)=>a+b.b2c,0))+'</b></div><div class="mini"><small>B2B Cost</small><b>'+money(mb.reduce((a,b)=>a+b.b2b,0))+'</b></div><div class="mini"><small>Collection Charges</small><b>'+money(mb.reduce((a,b)=>a+b.collection,0))+'</b></div><div class="mini"><small>Report Charges</small><b>'+money(mb.reduce((a,b)=>a+b.report,0))+'</b></div><div class="mini"><small>Monthly Profit</small><b class="green">'+money(mb.reduce((a,b)=>a+b.profit,0))+'</b></div></div>'}
-function renderBills(){const q=($('billSearch').value||'').trim().toLowerCase(),arr=db.bills.filter(b=>String(b.patient||'').toLowerCase().includes(q)||String(b.billNo||'').toLowerCase().includes(q));$('billList').innerHTML=arr.length?arr.map(b=>'<div class="card bill"><div class="billhead"><div><div class="billname">'+esc(b.patient)+'</div><div class="muted">'+esc(b.billNo)+' • '+esc(b.date)+'</div></div><div style="text-align:right"><b>'+money(b.b2c)+'</b><div class="muted">Profit '+money(b.profit)+'</div></div></div><div class="muted" style="margin-top:8px">'+b.tests.map(t=>esc(t.name)).join(', ')+'</div><div class="toolbar" style="margin-top:10px;margin-bottom:0"><button class="btn ghost edit-bill" data-no="'+attr(b.billNo)+'">View / Edit</button><button class="btn danger delete-bill" data-no="'+attr(b.billNo)+'">Delete</button></div></div>').join(''):'<div class="empty">No bills found</div>'}
-$('billList').addEventListener('click',e=>{const edit=e.target.closest('.edit-bill'),del=e.target.closest('.delete-bill');if(edit)openEditBill(edit.dataset.no);if(del)deleteBill(del.dataset.no)});
-function openEditBill(no){const b=db.bills.find(x=>x.billNo===no);if(!b)return;const body=$('editBody');body.innerHTML='';const wrap=document.createElement('div');wrap.innerHTML='<div class="field"><label>Patient Name</label><input id="ePatient"></div><div class="field"><label>Date</label><input id="eDate" type="date"></div><div class="field"><label>Add / Change Test</label><input id="eTestSearch" placeholder="Type test name"><div id="eSuggest" class="suggestbox" style="display:none"></div></div><div class="test-editor"><b>Tests in this Bill</b><div id="eTests"></div></div><div class="summary"><div class="mini"><small>Total MRP</small><b id="eMRP">₹0</b></div><div class="mini"><small>Total B2B</small><b id="eB2B">₹0</b></div><div class="mini"><small>Discount</small><b id="eDiscount">₹0</b></div></div><div class="row" style="margin-top:10px"><div class="field"><label>B2C</label><input id="eB2C" type="number" min="0"></div><div class="field"><label>Collection Charges (once)</label><input id="eCC" type="number" min="0"></div><div class="field"><label>Report Charges (once)</label><input id="eRC" type="number" min="0"></div></div><div class="card"><div class="muted">Profit = B2C − Total B2B − Collection − Report</div><div id="eProfit" style="font-size:23px;font-weight:900;color:var(--green)">₹0</div></div><button class="btn primary" id="updateBillBtn" style="width:100%;margin-top:10px">Update Bill</button>';body.appendChild(wrap);
-$('ePatient').value=b.patient;$('eDate').value=b.date;$('eB2C').value=b.b2c;$('eCC').value=b.collection;$('eRC').value=b.report;let editTests=b.tests.map(t=>({...t}));
-function editCalc(){const x=calculateBill({tests:editTests,b2c:Number($('eB2C').value)||0,collection:Number($('eCC').value)||0,report:Number($('eRC').value)||0});$('eMRP').textContent=money(x.mrp);$('eB2B').textContent=money(x.b2b);$('eDiscount').textContent=money(x.discount);$('eProfit').textContent=money(x.profit)}
-function renderEditTests(){const box=$('eTests');box.innerHTML='';if(!editTests.length){box.innerHTML='<div class="empty" style="padding:15px">No tests. Add a test above.</div>';return}editTests.forEach((t,i)=>{const d=document.createElement('div');d.className='row';d.style.marginTop='8px';d.innerHTML='<div><b>'+esc(t.name)+'</b><div class="muted">MRP '+money(t.mrp)+' • B2B '+money(t.b2b)+'</div></div><button class="btn danger e-remove" data-i="'+i+'">Remove</button>';box.appendChild(d)})}
-$('eTests').addEventListener('click',e=>{const r=e.target.closest('.e-remove');if(r){editTests.splice(Number(r.dataset.i),1);renderEditTests();editCalc()}});
-function editSuggest(q){const sb=$('eSuggest');q=q.trim().toLowerCase();sb.innerHTML='';if(!q){sb.style.display='none';return}const arr=db.tests.filter(t=>t.name.toLowerCase().includes(q)).slice(0,15);arr.forEach(t=>{const d=document.createElement('div');d.innerHTML='<b>'+esc(t.name)+'</b><br><span class="muted">MRP '+money(t.mrp)+' • B2B '+money(t.b2b)+'</span>';d.addEventListener('click',()=>{if(!editTests.some(x=>x.name.toLowerCase()===t.name.toLowerCase()))editTests.push({...t});$('eTestSearch').value='';sb.style.display='none';renderEditTests();editCalc()});sb.appendChild(d)});sb.style.display=arr.length?'block':'none'}
-$('eTestSearch').addEventListener('input',e=>editSuggest(e.target.value));['eB2C','eCC','eRC'].forEach(id=>$(id).addEventListener('input',editCalc));$('updateBillBtn').addEventListener('click',()=>{if(!$('ePatient').value.trim()){toast('Patient Name required');return}if(!editTests.length){toast('At least one test required');return}const updated=calculateBill({billNo:b.billNo,date:$('eDate').value,patient:$('ePatient').value.trim(),tests:editTests,b2c:Number($('eB2C').value)||0,collection:Number($('eCC').value)||0,report:Number($('eRC').value)||0});const idx=db.bills.findIndex(x=>x.billNo===no);db.bills[idx]=updated;saveDB();closeModal();renderBills();renderDashboard();toast('Bill updated successfully')});renderEditTests();editCalc();$('editModal').classList.add('show')}
-function closeModal(){$('editModal').classList.remove('show')}
-$('closeModalBtn').addEventListener('click',closeModal);$('editModal').addEventListener('click',e=>{if(e.target.id==='editModal')closeModal()});
-function deleteBill(no){if(!confirm('Delete this bill?'))return;db.bills=db.bills.filter(b=>b.billNo!==no);saveDB();renderBills();renderDashboard();toast('Bill deleted')}
-function renderTests(){const q=($('masterSearch').value||'').trim().toLowerCase(),arr=db.tests.filter(t=>t.name.toLowerCase().includes(q));$('testList').innerHTML=arr.map(t=>'<div class="card" style="margin-top:8px"><div class="billhead"><div><b>'+esc(t.name)+'</b><div class="muted">MRP '+money(t.mrp)+' • B2B '+money(t.b2b)+'</div></div><button class="btn danger delete-test" data-name="'+attr(t.name)+'">Delete</button></div></div>').join('')||'<div class="empty">No tests</div>'}
-$('testList').addEventListener('click',e=>{const b=e.target.closest('.delete-test');if(b)deleteTest(b.dataset.name)});
-function addTest(){const n=$('newTestName').value.trim(),m=Number($('newTestMRP').value),b=Number($('newTestB2B').value);if(!n){toast('Test name required');return}if(!Number.isFinite(m)||m<0||!Number.isFinite(b)||b<0){toast('Enter valid MRP and B2B');return}const existing=db.tests.find(t=>t.name.toLowerCase()===n.toLowerCase());if(existing){existing.name=n;existing.mrp=m;existing.b2b=b;toast('Test updated in master')}else{db.tests.push({name:n,mrp:m,b2b:b});toast('Test added to master')}saveDB();$('newTestName').value='';$('newTestMRP').value='';$('newTestB2B').value='';renderTests()}
-function deleteTest(n){db.tests=db.tests.filter(t=>t.name.toLowerCase()!==String(n).toLowerCase());saveDB();renderTests();toast('Test deleted')}
-function importTests(ev){const f=ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{try{const wb=XLSX.read(e.target.result,{type:'array'}),sheet=wb.Sheets[wb.SheetNames[0]],rows=XLSX.utils.sheet_to_json(sheet,{defval:''});let count=0;rows.forEach(x=>{const n=x['Test Name']??x['Name']??x['test_name'];const m=x['MRP']??x['mrp'];const b=x['B2B Rate']??x['B2B']??x['b2b'];if(String(n??'').trim()){const name=String(n).trim(),mrp=Number(m)||0,b2b=Number(b)||0,ex=db.tests.find(t=>t.name.toLowerCase()===name.toLowerCase());if(ex){ex.name=name;ex.mrp=mrp;ex.b2b=b2b}else db.tests.push({name,mrp,b2b});count++}});saveDB();renderTests();toast(count+' tests imported/updated')}catch(err){alert('Excel format could not be read. Use columns: Test Name, MRP, B2B Rate')}finally{ev.target.value=''}};r.readAsArrayBuffer(f)}
-function exportTests(){downloadXlsx(db.tests.map(t=>({'Test Name':t.name,'MRP':t.mrp,'B2B Rate':t.b2b})),'Test_Master.xlsx','Test Master')}
-function exportBills(){const rows=[];db.bills.forEach(b=>b.tests.forEach(t=>rows.push({'Bill No':b.billNo,'Date':b.date,'Patient Name':b.patient,'Test Name':t.name,'Test MRP':t.mrp,'Test B2B':t.b2b,'Total MRP':b.mrp,'Total B2B':b.b2b,'Total B2C':b.b2c,'Discount':b.discount,'Collection Charges':b.collection,'Report Charges':b.report,'Profit':b.profit})));downloadXlsx(rows,'Kalyan_Pathlab_Bills.xlsx','Bills')}
-function exportMonthly(){const ym=$('reportMonth').value,arr=db.bills.filter(b=>!ym||String(b.date).startsWith(ym));downloadXlsx(arr.map(b=>({'Bill No':b.billNo,'Date':b.date,'Patient Name':b.patient,'Total MRP':b.mrp,'Total B2B':b.b2b,'Total B2C':b.b2c,'Discount':b.discount,'Collection Charges':b.collection,'Report Charges':b.report,'Profit':b.profit})),'Kalyan_Pathlab_Monthly_Report.xlsx','Monthly Report')}
-function downloadXlsx(rows,name,sheet){if(!window.XLSX){alert('Excel engine not loaded. Internet connection is required for Excel import/export in this version.');return}const ws=XLSX.utils.json_to_sheet(rows),wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,sheet);XLSX.writeFile(wb,name)}
-function renderReports(){const ym=$('reportMonth').value||today().slice(0,7);$('reportMonth').value=ym;const a=db.bills.filter(b=>String(b.date||'').startsWith(ym)),sum=k=>a.reduce((x,b)=>x+Number(b[k]||0),0);$('reportData').innerHTML='<h3>'+ym+'</h3><div class="summary"><div class="mini"><small>Bills</small><b>'+a.length+'</b></div><div class="mini"><small>Total MRP</small><b>'+money(sum('mrp'))+'</b></div><div class="mini"><small>B2C</small><b>'+money(sum('b2c'))+'</b></div><div class="mini"><small>B2B</small><b>'+money(sum('b2b'))+'</b></div><div class="mini"><small>Charges</small><b>'+money(sum('collection')+sum('report'))+'</b></div><div class="mini"><small>Profit</small><b class="green">'+money(sum('profit'))+'</b></div></div>'}
+function monthLabel(ym){const [y,m]=ym.split('-');return new Date(Number(y),Number(m)-1,1).toLocaleString('en-IN',{month:'long',year:'numeric'})}
+function id(){const d=today().replaceAll('-','');let max=0;db.bills.forEach(b=>{const m=String(b.billNo||'').match(new RegExp('^KP'+d+'(\\d+)$'));if(m)max=Math.max(max,Number(m[1]))});return 'KP'+d+String(max+1).padStart(4,'0')}
+function toast(s){const t=$('toast');t.textContent=s;t.style.display='block';clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.style.display='none',2200)}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function attr(s){return esc(s)}
-document.querySelectorAll('.nav button').forEach(btn=>btn.addEventListener('click',()=>{const n=btn.dataset.screen;if(n==='newbill')resetBill();showScreen(n)}));
-$('clearBillBtn').addEventListener('click',resetBill);$('saveBillBtn').addEventListener('click',saveBill);['b2c','collection','report'].forEach(id=>$(id).addEventListener('input',calc));$('billSearch').addEventListener('input',renderBills);$('masterSearch').addEventListener('input',renderTests);$('addTestBtn').addEventListener('click',addTest);$('importExcelBtn').addEventListener('click',()=>$('excelFile').click());$('excelFile').addEventListener('change',importTests);$('exportTestsBtn').addEventListener('click',exportTests);$('exportBillsBtn').addEventListener('click',exportBills);$('reportMonth').addEventListener('change',renderReports);$('exportMonthlyBtn').addEventListener('click',exportMonthly);
-$('billDate').value=today();$('billNo').value=id();renderDashboard();renderTests();renderBills();renderReports();
+function initials(s){return String(s||'?').trim().charAt(0).toUpperCase()||'?'}
+function downloadXlsx(rows,name,sheet){
+  if(!window.XLSX){alert('Excel engine not loaded. Internet connection is required for Excel import/export in this version.');return}
+  const ws=XLSX.utils.json_to_sheet(rows),wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,sheet);
+  XLSX.writeFile(wb,name);
+}
+function sumRow(iconSvg,colorClass,label,value,highlight){
+  return '<div class="sumrow'+(highlight?' highlight':'')+'"><span class="sumleft"><span class="sicon '+colorClass+'">'+iconSvg+'</span>'+esc(label)+'</span><b'+(highlight?' class="green"':'')+'>'+value+'</b></div>';
+}
+
+/* ---------- icon set (original, hand-drawn — no third-party assets) ---------- */
+const ICONS={
+  back:'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>',
+  calendar:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
+  save:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h8V3M7 21v-8h10v8"/></svg>',
+  edit:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>',
+  dots:'<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>',
+  refresh:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>',
+  doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l3 3v17H6z"/><path d="M14 2v4h4"/></svg>',
+  rupee:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h11M6 9h11M8 4c4 0 6 2 6 4.5S12 13 8 13l8 8"/></svg>',
+  trend:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>',
+  briefcase:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>',
+  download:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-4-4m4 4 4-4"/><path d="M4 19h16"/></svg>'
+};
+
+/* ---------- screen / header / nav ---------- */
+const HEADERS={
+  dashboard:{type:'menu',title:'Dashboard',icon:'calendar',hasNav:true},
+  newbill:{type:'back',title:'New Bill',icon:'save',hasNav:true,backTo:'dashboard',action:()=>saveBill()},
+  bills:{type:'menu',title:'Bills',icon:'dots',hasNav:true,action:()=>exportBillsFiltered()},
+  reports:{type:'menu',title:'Reports',hasNav:true},
+  more:{type:'menu',title:'More',hasNav:true},
+  testmaster:{type:'menu',title:'Test Master',icon:'refresh',hasNav:true,action:()=>{renderTests();toast('Refreshed')}},
+  profit:{type:'back',title:'Profit Analysis',hasNav:true,backTo:'more'},
+  importtests:{type:'back',title:'Import Tests from Excel',hasNav:false,backTo:'testmaster'},
+  billdetails:{type:'back',title:'Bill Details',icon:'edit',hasNav:false,backTo:'bills',action:()=>{loadEditBill(currentBillNo);showScreen('editbill')}},
+  editbill:{type:'back',title:'Edit Bill',hasNav:false,backTo:'billdetails'},
+  about:{type:'back',title:'About',hasNav:false,backTo:'more'}
+};
+const NAVMAP={dashboard:'dashboard',newbill:'newbill',bills:'bills',billdetails:'bills',editbill:'bills',reports:'reports',more:'more',testmaster:'more',profit:'more',importtests:'more',about:'more'};
+
+function renderTopbar(name){
+  const h=HEADERS[name];
+  const bar=$('topbar');
+  if(!h){bar.innerHTML='';return}
+  const iconSvg=h.icon?(ICONS[h.icon]||''):'';
+  if(h.type==='menu'){
+    bar.innerHTML='<button class="brandbtn" id="topBrand"><img class="tlogo" src="logo.png"><span class="brandtext"><b>Kalyan Pathlab Business</b><span>'+esc(h.title)+'</span></span></button>'+(iconSvg?'<button class="iconbtn" id="topAction">'+iconSvg+'</button>':'');
+    $('topBrand').addEventListener('click',()=>showScreen('dashboard'));
+  }else{
+    bar.innerHTML='<button class="iconbtn" id="topBack">'+ICONS.back+'</button><div class="ttitle">'+esc(h.title)+'</div>'+(iconSvg?'<button class="iconbtn" id="topAction">'+iconSvg+'</button>':'<span style="width:30px"></span>');
+    $('topBack').addEventListener('click',()=>showScreen(h.backTo||'dashboard'));
+  }
+  if(iconSvg && h.action) $('topAction').addEventListener('click',h.action);
+}
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+  $(name).classList.add('active');
+  renderTopbar(name);
+  const navTab=NAVMAP[name]||name;
+  const h=HEADERS[name];
+  document.querySelector('.nav').style.display=(h&&h.hasNav===false)?'none':'grid';
+  document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab===navTab));
+  if(name==='dashboard')renderDashboard();
+  if(name==='newbill')resetBill();
+  if(name==='bills')renderBills();
+  if(name==='reports')renderReports();
+  if(name==='testmaster')renderTests();
+  if(name==='profit')renderProfit();
+  if(name==='importtests')$('importResult').innerHTML='';
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('.nav button').forEach(btn=>btn.addEventListener('click',()=>showScreen(btn.dataset.tab)));
+$('goTestMaster').addEventListener('click',()=>showScreen('testmaster'));
+$('goProfit').addEventListener('click',()=>showScreen('profit'));
+$('goImport').addEventListener('click',()=>showScreen('importtests'));
+$('goExportTests').addEventListener('click',exportTests);
+$('goExportBills').addEventListener('click',()=>exportBillsFiltered(true));
+$('goAbout').addEventListener('click',()=>showScreen('about'));
+
+/* ---------- install app ---------- */
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e});
+window.addEventListener('appinstalled',()=>{toast('App installed successfully');deferredInstallPrompt=null});
+if(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches){
+  const ic=$('installCard');if(ic)ic.style.display='none';
+}
+$('installBtn').addEventListener('click',async()=>{
+  if(deferredInstallPrompt){
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt=null;
+  }else if(/iphone|ipad|ipod/i.test(navigator.userAgent)){
+    toast('On iPhone: tap the Share icon, then "Add to Home Screen".');
+  }else{
+    toast('Use your browser menu → "Install app" / "Add to Home screen".');
+  }
+});
+
+/* ---------- share bill (WhatsApp / Email) ---------- */
+function buildBillMessage(b){
+  const lines=[];
+  lines.push('Kalyan Pathlab Business');
+  lines.push('Bill No: '+b.billNo);
+  lines.push('Date: '+b.date);
+  lines.push('Patient: '+b.patient);
+  lines.push('');
+  lines.push('Tests:');
+  b.tests.forEach(t=>lines.push('- '+t.name+' : '+money(t.b2c)));
+  lines.push('');
+  lines.push('Total Payable: '+money(b.b2c));
+  lines.push('');
+  lines.push('Thank you for choosing Kalyan Pathlab Business!');
+  lines.push('For queries: WhatsApp +91 98700 20674 | Email '+LAB_EMAIL);
+  return lines.join('\n');
+}
+function shareBillWhatsApp(b){window.open('https://wa.me/?text='+encodeURIComponent(buildBillMessage(b)),'_blank')}
+function shareBillEmail(b){
+  const subject='Kalyan Pathlab Business - Bill '+b.billNo;
+  window.location.href='mailto:?cc='+encodeURIComponent(LAB_EMAIL)+'&subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(buildBillMessage(b));
+}
+$('shareWhatsappBtn').addEventListener('click',()=>{const b=db.bills.find(x=>x.billNo===currentBillNo);if(b)shareBillWhatsApp(b)});
+$('shareEmailBtn').addEventListener('click',()=>{const b=db.bills.find(x=>x.billNo===currentBillNo);if(b)shareBillEmail(b)});
+
+/* ---------- DASHBOARD ---------- */
+function renderDashboard(){
+  const t=today(),ym=t.slice(0,7);
+  $('todayLabel').textContent='• '+new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  $('monthLabel').textContent='('+monthLabel(ym)+')';
+  const tb=db.bills.filter(b=>b.date===t),sum=(arr,k)=>arr.reduce((a,b)=>a+Number(b[k]||0),0);
+  $('tBills').textContent=tb.length;
+  $('tB2C').textContent=money(sum(tb,'b2c'));
+  $('tB2B').textContent=money(sum(tb,'b2b'));
+  $('tProfit').textContent=money(sum(tb,'profit'));
+  const mb=db.bills.filter(b=>String(b.date||'').startsWith(ym));
+  $('monthlySummary').innerHTML='<div class="sumlist">'
+    +sumRow(ICONS.doc,'icb-blue','Bills',mb.length)
+    +sumRow(ICONS.rupee,'icb-blue','Total MRP',money(sum(mb,'mrp')))
+    +sumRow(ICONS.trend,'icb-green','Total B2C Collection',money(sum(mb,'b2c')))
+    +sumRow(ICONS.briefcase,'icb-red','Total B2B Cost',money(sum(mb,'b2b')))
+    +sumRow(ICONS.download,'icb-blue','Collection Charges',money(sum(mb,'collection')))
+    +sumRow(ICONS.doc,'icb-orange','Report Charges',money(sum(mb,'report')))
+    +sumRow(ICONS.check,'icb-green','Monthly Profit',money(sum(mb,'profit')),true)
+    +'</div>';
+}
+
+/* ---------- shared test-line editor (used by New Bill + Edit Bill) ---------- */
+function testLineHTML(t,i){
+  return '<div class="testline"><div class="tl-head"><b>'+esc(t.name)+'</b><button class="tl-remove" data-i="'+i+'" title="Remove">×</button></div>'
+    +'<div class="tl-grid">'
+    +'<div class="tl-f"><label>MRP</label><input type="number" min="0" class="tl-in" data-i="'+i+'" data-k="mrp" value="'+t.mrp+'"></div>'
+    +'<div class="tl-f"><label>B2C</label><input type="number" min="0" class="tl-in" data-i="'+i+'" data-k="b2c" value="'+t.b2c+'"></div>'
+    +'<div class="tl-f"><label>B2B</label><input type="number" min="0" class="tl-in" data-i="'+i+'" data-k="b2b" value="'+t.b2b+'"></div>'
+    +'<div class="tl-f"><label>Collection</label><input type="number" min="0" class="tl-in" data-i="'+i+'" data-k="collection" value="'+t.collection+'"></div>'
+    +'<div class="tl-f"><label>Report</label><input type="number" min="0" class="tl-in" data-i="'+i+'" data-k="report" value="'+t.report+'"></div>'
+    +'</div><div class="tl-profit">Profit:<b>'+money(lineProfit(t))+'</b></div></div>';
+}
+function renderLines(containerEl,emptyEl,arr){
+  containerEl.innerHTML=arr.map((t,i)=>testLineHTML(t,i)).join('');
+  emptyEl.style.display=arr.length?'none':'block';
+}
+
+/* ---------- NEW BILL ---------- */
+function resetBill(){
+  currentTests=[];
+  $('billNo').value=id();
+  $('billDate').value=today();
+  $('patient').value='';
+  $('testSearch').value='';
+  renderLines($('billTestLines'),$('noTests'),currentTests);
+  calcTotals();
+}
+function calcTotals(){
+  const sum=k=>currentTests.reduce((a,t)=>a+Number(t[k]||0),0);
+  const mrp=sum('mrp'),b2c=sum('b2c'),b2b=sum('b2b'),cc=sum('collection'),rc=sum('report');
+  $('totalMRP').textContent=money(mrp);
+  $('totalB2C').textContent=money(b2c);
+  $('totalB2B').textContent=money(b2b);
+  $('totalCC').textContent=money(cc);
+  $('totalRC').textContent=money(rc);
+  $('totalDiscount').textContent=money(mrp-b2c);
+  $('billProfit').textContent=money(b2c-b2b-cc-rc);
+}
+function addTestToCurrent(t){
+  if(!t)return;
+  if(currentTests.some(x=>x.name.toLowerCase()===t.name.toLowerCase())){
+    toast('This test is already added to the bill');
+    $('testSearch').value='';$('suggestBox').style.display='none';
+    return;
+  }
+  currentTests.push({name:t.name,mrp:Number(t.b2c)||0,b2c:Number(t.b2c)||0,b2b:Number(t.b2b)||0,collection:0,report:0});
+  $('testSearch').value='';$('suggestBox').style.display='none';
+  renderLines($('billTestLines'),$('noTests'),currentTests);
+  calcTotals();
+}
+function buildSuggest(q,box,tests,onPick){
+  q=(q||'').trim().toLowerCase();box.innerHTML='';
+  if(!q){box.style.display='none';return}
+  const arr=tests.filter(t=>t.name.toLowerCase().includes(q)).slice(0,15);
+  arr.forEach(t=>{
+    const d=document.createElement('div');
+    d.innerHTML='<b>'+esc(t.name)+'</b><br><span class="muted">B2C '+money(t.b2c)+' • B2B '+money(t.b2b)+'</span>';
+    d.addEventListener('click',()=>onPick(t));
+    box.appendChild(d);
+  });
+  box.style.display=arr.length?'block':'none';
+}
+$('testSearch').addEventListener('input',()=>buildSuggest($('testSearch').value,$('suggestBox'),db.tests,addTestToCurrent));
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.suggest')){
+    $('suggestBox').style.display='none';
+    const es=$('eSuggest');if(es)es.style.display='none';
+  }
+});
+$('billTestLines').addEventListener('input',e=>{
+  const inp=e.target.closest('.tl-in');if(!inp)return;
+  const i=Number(inp.dataset.i),k=inp.dataset.k;
+  currentTests[i][k]=Number(inp.value)||0;
+  const card=inp.closest('.testline');
+  card.querySelector('.tl-profit b').textContent=money(lineProfit(currentTests[i]));
+  calcTotals();
+});
+$('billTestLines').addEventListener('click',e=>{
+  const rm=e.target.closest('.tl-remove');if(!rm)return;
+  currentTests.splice(Number(rm.dataset.i),1);
+  renderLines($('billTestLines'),$('noTests'),currentTests);
+  calcTotals();
+});
+$('clearBillBtn').addEventListener('click',resetBill);
+$('saveBillBtn').addEventListener('click',saveBill);
+
+function saveBill(){
+  const patient=$('patient').value.trim();
+  if(!patient){toast('Patient Name required');return}
+  if(!currentTests.length){toast('Add at least one test');return}
+  const bill=calculateBill({billNo:$('billNo').value,date:$('billDate').value,patient,tests:currentTests});
+  db.bills.unshift(bill);saveDB();
+  toast('Bill saved successfully');
+  openBillDetails(bill.billNo);
+}
+
+/* ---------- BILLS ---------- */
+$('billTabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;billTab=b.dataset.tab;document.querySelectorAll('#billTabs button').forEach(x=>x.classList.toggle('active',x===b));renderBills()});
+$('billSearch').addEventListener('input',renderBills);
+$('fromDate').addEventListener('change',renderBills);
+$('toDate').addEventListener('change',renderBills);
+
+function filteredBills(){
+  const q=($('billSearch').value||'').trim().toLowerCase();
+  const from=$('fromDate').value,to=$('toDate').value;
+  let arr=db.bills.filter(b=>String(b.patient||'').toLowerCase().includes(q)||String(b.billNo||'').toLowerCase().includes(q));
+  if(from) arr=arr.filter(b=>String(b.date)>=from);
+  if(to) arr=arr.filter(b=>String(b.date)<=to);
+  if(!from && !to){
+    if(billTab==='today') arr=arr.filter(b=>b.date===today());
+    if(billTab==='month') arr=arr.filter(b=>String(b.date||'').startsWith(today().slice(0,7)));
+  }
+  return arr;
+}
+function renderBills(){
+  const arr=filteredBills();
+  $('billList').innerHTML=arr.length?arr.map(b=>
+    '<div class="card bill"><div class="billrow" data-no="'+attr(b.billNo)+'">'
+    +'<div class="avatar">'+esc(initials(b.patient))+'</div>'
+    +'<div style="flex:1"><div class="billname">'+esc(b.patient)+'</div><div class="muted">'+esc(b.billNo)+' • '+esc(b.date)+' • '+b.tests.length+' test(s)</div></div>'
+    +'<div style="text-align:right"><b>'+money(b.b2c)+'</b></div><div class="chev">›</div></div></div>'
+  ).join(''):'<div class="empty">No bills found</div>';
+}
+$('billList').addEventListener('click',e=>{const r=e.target.closest('.billrow');if(r)openBillDetails(r.dataset.no)});
+
+function openBillDetails(no){
+  const b=db.bills.find(x=>x.billNo===no);if(!b)return;
+  currentBillNo=no;
+  $('billDetailsBody').innerHTML=
+    '<div class="row"><div class="avatar" style="width:46px;height:46px;font-size:18px">'+esc(initials(b.patient))+'</div><div><div class="muted">Patient Name</div><b style="font-size:16px">'+esc(b.patient)+'</b></div></div>'
+    +'<div class="row" style="margin-top:10px"><div><div class="muted">Bill No.</div><b>'+esc(b.billNo)+'</b></div><div><div class="muted">Date</div><b>'+esc(b.date)+'</b></div></div>'
+    +'<div class="samplebox card" style="padding:8px;margin-top:10px"><table class="tests"><thead><tr><th>Test</th><th>MRP</th><th>B2C</th><th>B2B</th><th>Coll.</th><th>Report</th><th>Profit</th></tr></thead><tbody>'
+    +b.tests.map(t=>'<tr><td>'+esc(t.name)+'</td><td>'+money(t.mrp)+'</td><td>'+money(t.b2c)+'</td><td>'+money(t.b2b)+'</td><td>'+money(t.collection)+'</td><td>'+money(t.report)+'</td><td>'+money(lineProfit(t))+'</td></tr>').join('')
+    +'</tbody></table></div>'
+    +'<div class="summary">'
+    +'<div class="mini"><small>Total MRP</small><b>'+money(b.mrp)+'</b></div>'
+    +'<div class="mini"><small>Total B2C</small><b>'+money(b.b2c)+'</b></div>'
+    +'<div class="mini"><small>Total B2B</small><b>'+money(b.b2b)+'</b></div>'
+    +'<div class="mini"><small>Collection Charges</small><b>'+money(b.collection)+'</b></div>'
+    +'<div class="mini"><small>Report Charges</small><b>'+money(b.report)+'</b></div>'
+    +'<div class="mini"><small>Discount</small><b>'+money(b.discount)+'</b></div>'
+    +'</div>'
+    +'<div class="profitbox"><div class="muted">Final Profit</div><div class="profitbig">'+money(b.profit)+'</div></div>';
+  showScreen('billdetails');
+}
+$('editBillBtn').addEventListener('click',()=>{loadEditBill(currentBillNo);showScreen('editbill')});
+$('deleteBillBtn').addEventListener('click',()=>{
+  if(!confirm('Delete this bill?'))return;
+  db.bills=db.bills.filter(b=>b.billNo!==currentBillNo);saveDB();
+  toast('Bill deleted');showScreen('bills');
+});
+
+function exportBillsFiltered(all){
+  const arr=all?db.bills:filteredBills();
+  const rows=[];
+  arr.forEach(b=>b.tests.forEach(t=>rows.push({'Bill No':b.billNo,'Date':b.date,'Patient Name':b.patient,'Test Name':t.name,'Test MRP':t.mrp,'Test B2C':t.b2c,'Test B2B':t.b2b,'Test Collection':t.collection,'Test Report':t.report,'Test Profit':lineProfit(t),'Bill Total MRP':b.mrp,'Bill Total B2C':b.b2c,'Bill Total B2B':b.b2b,'Bill Discount':b.discount,'Bill Final Profit':b.profit})));
+  if(!rows.length){toast('No bills to export');return}
+  downloadXlsx(rows,'Kalyan_Pathlab_Bills.xlsx','Bills');
+}
+
+/* ---------- EDIT BILL ---------- */
+function loadEditBill(no){
+  const b=db.bills.find(x=>x.billNo===no);if(!b)return;
+  $('eBillNo').value=b.billNo;$('eDate').value=b.date;$('ePatient').value=b.patient;
+  editTests=b.tests.map(t=>({...t}));
+  renderLines($('eTestLines'),$('eNoTests'),editTests);
+  editCalc();
+}
+function editCalc(){
+  const sum=k=>editTests.reduce((a,t)=>a+Number(t[k]||0),0);
+  const mrp=sum('mrp'),b2c=sum('b2c'),b2b=sum('b2b'),cc=sum('collection'),rc=sum('report');
+  $('eMRP').textContent=money(mrp);
+  $('eB2Ctot').textContent=money(b2c);
+  $('eB2B').textContent=money(b2b);
+  $('eCCtot').textContent=money(cc);
+  $('eRCtot').textContent=money(rc);
+  $('eDiscount').textContent=money(mrp-b2c);
+  $('eProfit').textContent=money(b2c-b2b-cc-rc);
+}
+$('eTestLines').addEventListener('input',e=>{
+  const inp=e.target.closest('.tl-in');if(!inp)return;
+  const i=Number(inp.dataset.i),k=inp.dataset.k;
+  editTests[i][k]=Number(inp.value)||0;
+  const card=inp.closest('.testline');
+  card.querySelector('.tl-profit b').textContent=money(lineProfit(editTests[i]));
+  editCalc();
+});
+$('eTestLines').addEventListener('click',e=>{
+  const rm=e.target.closest('.tl-remove');if(!rm)return;
+  editTests.splice(Number(rm.dataset.i),1);
+  renderLines($('eTestLines'),$('eNoTests'),editTests);
+  editCalc();
+});
+function addTestToEdit(t){
+  if(!t)return;
+  if(editTests.some(x=>x.name.toLowerCase()===t.name.toLowerCase())){
+    toast('This test is already added to the bill');
+    $('eTestSearch').value='';$('eSuggest').style.display='none';
+    return;
+  }
+  editTests.push({name:t.name,mrp:Number(t.b2c)||0,b2c:Number(t.b2c)||0,b2b:Number(t.b2b)||0,collection:0,report:0});
+  $('eTestSearch').value='';$('eSuggest').style.display='none';
+  renderLines($('eTestLines'),$('eNoTests'),editTests);
+  editCalc();
+}
+$('eTestSearch').addEventListener('input',()=>buildSuggest($('eTestSearch').value,$('eSuggest'),db.tests,addTestToEdit));
+$('updateBillBtn').addEventListener('click',()=>{
+  if(!$('ePatient').value.trim()){toast('Patient Name required');return}
+  if(!editTests.length){toast('At least one test required');return}
+  const updated=calculateBill({billNo:$('eBillNo').value,date:$('eDate').value,patient:$('ePatient').value.trim(),tests:editTests});
+  const idx=db.bills.findIndex(x=>x.billNo===$('eBillNo').value);
+  if(idx>-1)db.bills[idx]=updated;
+  saveDB();toast('Bill updated successfully');
+  openBillDetails(updated.billNo);
+});
+
+/* ---------- TEST MASTER ---------- */
+function renderTests(){
+  const q=($('masterSearch').value||'').trim().toLowerCase();
+  const arr=db.tests.filter(t=>t.name.toLowerCase().includes(q));
+  $('testList').innerHTML=arr.length?arr.map(t=>
+    '<div class="card" style="margin-top:8px"><div class="billhead"><div class="test-row" data-name="'+attr(t.name)+'" style="cursor:pointer;flex:1"><b>'+esc(t.name)+'</b><div class="muted">B2C '+money(t.b2c)+' • B2B '+money(t.b2b)+'</div></div><button class="btn danger delete-test" data-name="'+attr(t.name)+'">Delete</button></div></div>'
+  ).join(''):'<div class="empty">No tests</div>';
+}
+$('masterSearch').addEventListener('input',renderTests);
+$('testList').addEventListener('click',e=>{
+  const del=e.target.closest('.delete-test');
+  if(del){db.tests=db.tests.filter(t=>t.name.toLowerCase()!==String(del.dataset.name).toLowerCase());saveDB();renderTests();toast('Test deleted');return}
+  const row=e.target.closest('.test-row');
+  if(row){const t=db.tests.find(x=>x.name===row.dataset.name);if(t){$('newTestName').value=t.name;$('newTestB2C').value=t.b2c;$('newTestB2B').value=t.b2b;window.scrollTo(0,0)}}
+});
+$('addTestBtn').addEventListener('click',()=>{
+  const n=$('newTestName').value.trim(),b2c=Number($('newTestB2C').value),b2b=Number($('newTestB2B').value);
+  if(!n){toast('Test name required');return}
+  if(!Number.isFinite(b2c)||b2c<0||!Number.isFinite(b2b)||b2b<0){toast('Enter valid B2C and B2B');return}
+  const existing=db.tests.find(t=>t.name.toLowerCase()===n.toLowerCase());
+  if(existing){existing.name=n;existing.b2c=b2c;existing.b2b=b2b;toast('This test already exists — details updated')}
+  else{db.tests.push({name:n,b2c,b2b});toast('Test saved to master')}
+  saveDB();$('newTestName').value='';$('newTestB2C').value='';$('newTestB2B').value='';renderTests();
+});
+function exportTests(){downloadXlsx(db.tests.map(t=>({'Test Name':t.name,'B2C':t.b2c,'B2B':t.b2b})),'Test_Master.xlsx','Test Master')}
+$('exportTestsBtn').addEventListener('click',exportTests);
+$('importExcelBtnTM').addEventListener('click',()=>showScreen('importtests'));
+
+/* ---------- IMPORT TESTS ---------- */
+$('chooseExcelBtn').addEventListener('click',()=>$('excelFile').click());
+$('excelFile').addEventListener('change',ev=>{
+  const f=ev.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    try{
+      const wb=XLSX.read(e.target.result,{type:'array'}),sheet=wb.Sheets[wb.SheetNames[0]],rows=XLSX.utils.sheet_to_json(sheet,{defval:''});
+      let added=0,updated=0;
+      rows.forEach(x=>{
+        const n=x['Test Name']??x['Name']??x['test_name'];
+        const c=x['B2C']??x['b2c']??x['MRP']??x['mrp'];
+        const b=x['B2B']??x['B2B Rate']??x['b2b'];
+        if(String(n??'').trim()){
+          const name=String(n).trim(),b2c=Number(c)||0,b2b=Number(b)||0;
+          const ex=db.tests.find(t=>t.name.toLowerCase()===name.toLowerCase());
+          if(ex){ex.name=name;ex.b2c=b2c;ex.b2b=b2b;updated++}else{db.tests.push({name,b2c,b2b});added++}
+        }
+      });
+      saveDB();
+      const total=added+updated;
+      $('importResult').innerHTML='<div class="banner-ok">✅ Tests imported successfully! Total '+total+' tests processed ('+added+' new, '+updated+' updated — duplicates were merged, not repeated).</div>';
+      toast(total+' tests imported/updated');
+    }catch(err){
+      $('importResult').innerHTML='<div class="banner-err">⚠️ Excel format could not be read. Use columns: Test Name, B2C, B2B</div>';
+    }finally{ev.target.value=''}
+  };
+  r.readAsArrayBuffer(f);
+});
+
+/* ---------- REPORTS ---------- */
+$('reportTabs').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  reportTab=b.dataset.tab;
+  document.querySelectorAll('#reportTabs button').forEach(x=>x.classList.toggle('active',x===b));
+  $('dailyPane').style.display=reportTab==='daily'?'block':'none';
+  $('monthlyPane').style.display=reportTab==='monthly'?'block':'none';
+  renderReports();
+});
+$('dailyDate').addEventListener('change',renderReports);
+$('prevMonth').addEventListener('click',()=>{reportMonth=shiftMonth(reportMonth,-1);renderReports()});
+$('nextMonth').addEventListener('click',()=>{reportMonth=shiftMonth(reportMonth,1);renderReports()});
+function shiftMonth(ym,delta){const [y,m]=ym.split('-').map(Number);const d=new Date(y,m-1+delta,1);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}
+function reportBills(){
+  if(reportTab==='daily'){const d=$('dailyDate').value||today();$('dailyDate').value=d;return db.bills.filter(b=>b.date===d)}
+  if(reportTab==='monthly'){$('mlabel').textContent=monthLabel(reportMonth);return db.bills.filter(b=>String(b.date||'').startsWith(reportMonth))}
+  return db.bills;
+}
+function renderReports(){
+  const arr=reportBills(),sum=k=>arr.reduce((a,b)=>a+Number(b[k]||0),0);
+  const label=reportTab==='daily'?($('dailyDate').value||today()):reportTab==='monthly'?monthLabel(reportMonth):'All Time';
+  $('reportData').innerHTML='<h3>'+esc(label)+'</h3><div class="sumlist">'
+    +sumRow(ICONS.doc,'icb-blue','Total Bills',arr.length)
+    +sumRow(ICONS.rupee,'icb-blue','Total MRP',money(sum('mrp')))
+    +sumRow(ICONS.trend,'icb-green','B2C Collection',money(sum('b2c')))
+    +sumRow(ICONS.briefcase,'icb-red','Total B2B Cost',money(sum('b2b')))
+    +sumRow(ICONS.download,'icb-blue','Collection Charges',money(sum('collection')))
+    +sumRow(ICONS.doc,'icb-orange','Report Charges',money(sum('report')))
+    +sumRow(ICONS.check,'icb-green','Profit',money(sum('profit')),true)
+    +'</div>';
+}
+$('exportReportBtn').addEventListener('click',()=>{
+  const arr=reportBills();
+  if(!arr.length){toast('No bills to export');return}
+  const label=reportTab==='daily'?($('dailyDate').value||today()):reportTab==='monthly'?reportMonth:'All_Time';
+  downloadXlsx(arr.map(b=>({'Bill No':b.billNo,'Date':b.date,'Patient Name':b.patient,'Total MRP':b.mrp,'Total B2C':b.b2c,'Total B2B':b.b2b,'Collection Charges':b.collection,'Report Charges':b.report,'Discount':b.discount,'Profit':b.profit})),'Kalyan_Pathlab_Report_'+label+'.xlsx','Report');
+});
+
+/* ---------- PROFIT ANALYSIS ---------- */
+$('profitTabs').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  profitTab=b.dataset.tab;
+  document.querySelectorAll('#profitTabs button').forEach(x=>x.classList.toggle('active',x===b));
+  $('profitCustomRange').style.display=profitTab==='custom'?'flex':'none';
+  renderProfit();
+});
+$('pFrom').addEventListener('change',renderProfit);
+$('pTo').addEventListener('change',renderProfit);
+function profitBills(){
+  const t=today(),ym=t.slice(0,7);
+  if(profitTab==='today') return db.bills.filter(b=>b.date===t);
+  if(profitTab==='month') return db.bills.filter(b=>String(b.date||'').startsWith(ym));
+  if(profitTab==='custom'){
+    const f=$('pFrom').value,to=$('pTo').value;
+    return db.bills.filter(b=>(!f||String(b.date)>=f)&&(!to||String(b.date)<=to));
+  }
+  return db.bills;
+}
+function renderProfit(){
+  const arr=profitBills(),sum=k=>arr.reduce((a,b)=>a+Number(b[k]||0),0);
+  const mrp=sum('mrp'),b2c=sum('b2c'),b2b=sum('b2b'),cc=sum('collection'),rc=sum('report'),disc=sum('discount'),profit=sum('profit');
+  $('profitSummary').innerHTML=
+    '<div class="mini"><small>Bills</small><b>'+arr.length+'</b></div>'
+    +'<div class="mini"><small>Total MRP</small><b>'+money(mrp)+'</b></div>'
+    +'<div class="mini"><small>Total B2C</small><b>'+money(b2c)+'</b></div>'
+    +'<div class="mini"><small>Total B2B</small><b>'+money(b2b)+'</b></div>'
+    +'<div class="mini"><small>Collection Charges</small><b>'+money(cc)+'</b></div>'
+    +'<div class="mini"><small>Report Charges</small><b>'+money(rc)+'</b></div>'
+    +'<div class="mini"><small>Total Discount</small><b>'+money(disc)+'</b></div>';
+  $('profitNet').textContent=money(profit);
+  const margin=b2c>0?((profit/b2c)*100).toFixed(1):'0.0';
+  $('profitMargin').textContent='Profit Margin: '+margin+'% of B2C collection';
+  const max=Math.max(b2c,b2b,Math.abs(profit),1);
+  function bar(label,val,color){
+    const w=Math.min(100,Math.abs(val)/max*100);
+    return '<div class="barrow"><div class="barlabel"><span>'+label+'</span><span>'+money(val)+'</span></div><div class="bartrack"><div class="barfill" style="width:'+w+'%;background:'+color+'"></div></div></div>';
+  }
+  $('profitBars').innerHTML=bar('Total B2C',b2c,'#1677e8')+bar('Total B2B',b2b,'#e31b23')+bar('Net Profit',profit,'#148a52');
+}
+
+/* ---------- init ---------- */
+$('billDate').value=today();$('billNo').value=id();
+$('dailyDate').value=today();
+
+setTimeout(()=>{
+  $('splash').style.display='none';
+  showScreen('dashboard');
+},1100);
+
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
